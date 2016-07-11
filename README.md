@@ -1,2 +1,0 @@
-# wordsonwalls.nyc
-wordsonwalls.nyc

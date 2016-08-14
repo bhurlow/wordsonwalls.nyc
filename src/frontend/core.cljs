@@ -3,6 +3,8 @@
 
 (enable-console-print!)
 
+(println "SUP")
+
 (def app {})
 
 (xhr/send "/imgs"

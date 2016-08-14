@@ -1,0 +1,6 @@
+#! /bin/bash
+CP="jars/clojure.jar"
+CP="jars/cljs.jar"
+CP="$CP:jars/om.jar"
+java -cp $CP clojure.main $@
+

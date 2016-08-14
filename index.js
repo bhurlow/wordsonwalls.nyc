@@ -10,11 +10,11 @@ var client = knox.createClient({
   , bucket: 'wordsonwalls.nyc'
 });
 
-// app.get('/imgs', function(req, res) {
-//   client.list({}, function(err, list) {
-//     res.end(JSON.stringify(list))
-//   })
-// })
+app.get('/imgs', function(req, res) {
+  client.list({}, function(err, list) {
+    res.end(JSON.stringify(list))
+  })
+})
 
 app.use(express.static(__dirname + '/public'))
 app.listen(3000)

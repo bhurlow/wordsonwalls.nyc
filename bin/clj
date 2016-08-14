@@ -1,6 +1,11 @@
 #! /bin/bash
 CP="jars/clojure.jar"
-CP="jars/cljs.jar"
+CP="$CP:jars/cljs.jar"
+CP="$CP:$HOME/.m2/repository/cljsjs/react/15.0.1-1/react-15.0.1-1.jar"
+CP="$CP:$HOME/.m2/repository/cljsjs/react-dom/15.0.1-1/react-dom-15.0.1-1.jar"
 CP="$CP:jars/om.jar"
+
+echo $CP
+
 java -cp $CP clojure.main $@
 

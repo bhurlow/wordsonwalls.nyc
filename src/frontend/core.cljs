@@ -3,12 +3,12 @@
 
 (enable-console-print!)
 
-(println "SUP")
+(js/alert "baz")
 
-(def app {})
+; (def app {})
 
-(xhr/send "/imgs"
-  (fn [event] (println event)
-    (let [res (-> event .-target .getResponseText)
-          parsed (.parse window.JSON res)]
-      (println parsed))))
+; (xhr/send "/imgs"
+;   (fn [event] (println event)
+;     (let [res (-> event .-target .getResponseText)
+;           parsed (.parse window.JSON res)]
+;       (println parsed))))

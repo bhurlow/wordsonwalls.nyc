@@ -1,4 +1,8 @@
 
 body {
-  /* background: red; */
+  background: black;
+  color: white;
+  font-family: helvetica;
+  background-image: url(/img/word_back.jpeg);
 }
+

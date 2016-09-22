@@ -33,10 +33,11 @@
         (cb parsed)))))
 
 (defn make-s3-url [k]
-  (str "http://wordsonwalls.nyc.s3.amazonaws.com/" (js/encodeURIComponent k)))
+  (str "/s3image/" (js/encodeURIComponent k)))
 
 (defn cycle-image []
   (swap! app-state assoc :text "loading...")
+  (swap! app-state assoc :loading? true)
   (swap! app-state update-in [:selected-image] #(rand-nth (:s3-keys @app-state))))
 
 (defn format-title [k]
@@ -54,7 +55,9 @@
     (dom/div #js {:class "img-box"}
              (dom/img #js {:src (make-s3-url (:selected-image data)) 
                            :width  500
-                           :onLoad (swap! app-state assoc :text (format-title (:selected-image data)))
+                           :onLoad (do 
+                                     (swap! app-state assoc :text (format-title (:selected-image data)))
+                                     (swap! app-state assoc :loading? false))
                            :height 500}
                          nil))))
 
@@ -64,6 +67,8 @@
     (render [this]
       (dom/div #js {:className "frame mw6 center"}
         (dom/h1 #js {:className "bg-black pl2 pt2 pb2 pr2 tc"} "WORDSONWALLS.nyc")
+        ; (when (:loading? data)
+        ;   (dom/div #js {:className "w-100 bg-black tc pt1 pb1 absolute "} (dom/p nil "~ LOADING IMAGE ~")))
         (if (nil? (:selected-image data))
           (dom/img #js {:className "w-60 center db pointer" :src "/img/crystal_ball.jpeg"} nil)
           (render-image data))

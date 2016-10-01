@@ -17,13 +17,17 @@ var client = knox.createClient({
 });
 
 app.get('/imgs', function(req, res) {
-  client.list({}, function(err, list) {
-    res.end(JSON.stringify(list))
+  client.list({ prefix: 'processed' }, function(err, list) {
+    let data = list.Contents.map(x => x.Key.replace('processed/', ''))
+    res.end(JSON.stringify(data))
   })
 })
 
 app.get('/s3image/:key', function(req, res) {
-  request('http://wordsonwalls.nyc.s3.amazonaws.com/' + req.params.key)
+  console.log(req.params.key)
+  let url = 'http://wordsonwalls.nyc.s3.amazonaws.com/processed/' + req.params.key
+  console.log(url)
+  request(url)
     .pipe(res)
 })
 

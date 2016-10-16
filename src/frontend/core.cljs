@@ -12,13 +12,12 @@
 
 (enable-console-print!)
 
-(println "APP START")
-
 (defn reload-all []
   (require 'frontend.core :reload))
 
 (def app-state 
   (atom {:text "loading..."
+         :hash "#"
          :s3-keys []
          :selected-image nil}))
 
@@ -43,6 +42,8 @@
 (defn format-title [k]
   (str (first (clojure.string/split k #"\."))))
 
+;; ===== navigation 
+
 ;; ===== components
 
 (defn bg-style []
@@ -61,6 +62,14 @@
                            :height 500}
                          nil))))
 
+(defn render-main [data]
+  (case (:hash data)
+    "#" (if (nil? (:selected-image data))
+          (dom/img #js {:className "w-60 center db pointer" :src "/img/crystal_ball.jpeg"} nil)
+          (render-image data))
+    "#about" (dom/h1 nil "ABOUT PAGE")
+    :else (dom/p nil "nope")))
+
 (defn root-component [data owner]
   (reify
     om/IRender
@@ -69,28 +78,43 @@
         (dom/h1 #js {:className "bg-black pl2 pt2 pb2 pr2 tc"} "WORDSONWALLS.nyc")
         ; (when (:loading? data)
         ;   (dom/div #js {:className "w-100 bg-black tc pt1 pb1 absolute "} (dom/p nil "~ LOADING IMAGE ~")))
-        (if (nil? (:selected-image data))
-          (dom/img #js {:className "w-60 center db pointer" :src "/img/crystal_ball.jpeg"} nil)
-          (render-image data))
+        (render-main data)
         (dom/h3 #js {:className "bg-black pl2 pt2 pb2 pr2 tc"} (:text data))
-        (dom/footer #js {:className (bg-style)}
-          (dom/p nil "made by: Ken, Marcus, Brian")
-          (dom/p nil "APP VERSION 0.3"))))))
+        (dom/footer #js {:className (str "fixed bottom-1 w6 " (bg-style))}
+          (dom/div #js {:className "w-100"}
+            (dom/p #js {:className ""} (dom/a #js {:href "#about" :className "white"} "about wordsonwalls"))
+            (dom/p #js {:className "f7"} "made by: Ken, Marcus, Brian")
+            (dom/p nil "v0.3")))))))
 
 (om/root root-component app-state
   {:target (. js/document (getElementById "world"))})
 
+;; ===== setup
+
+(defn init-images [])
+  (fetch-images 
+    (fn [images] 
+      (-> images
+          (js->clj :keywordize-keys true)
+          (->> (swap! app-state assoc :s3-keys)))
+      (swap! app-state assoc :text "Fortunes from the Streets to You")
+      (aset js/window "onclick" cycle-image)))
+
+(defn on-location-change [e]
+  (println "location change"))
+
+(defn init-location []
+  (aset js/window "onbeforeunload" on-location-change)
+  (let [hash (aget (aget js/window "location") "hash")
+        hash (if (empty? hash) "#" hash)]
+    (swap! app-state assoc :hash hash)))
+
+(defn init []
+  (init-location)
+  (println "fetching image keys"))
+
 ;; ===== go!
-
-(println "fetching image keys")
-
-(fetch-images 
-  (fn [images] 
-    (-> images
-        (js->clj :keywordize-keys true)
-        (->> (swap! app-state assoc :s3-keys)))
-    (swap! app-state assoc :text "Fortunes from the Streets to You")
-    (aset js/window "onclick" cycle-image)))
+(init)
 
 
 

@@ -4,5 +4,7 @@ body {
   color: white;
   font-family: helvetica;
   background-image: url(/img/word_back.jpeg);
+  background-size: cover;
+  font-size: 12px;
 }
 

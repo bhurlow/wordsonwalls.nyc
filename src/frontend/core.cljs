@@ -40,7 +40,9 @@
   (swap! app-state update-in [:selected-image] #(rand-nth (:s3-keys @app-state))))
 
 (defn format-title [k]
-  (str (first (clojure.string/split k #"\."))))
+  (-> (first (clojure.string/split k #"\."))
+      (str)
+      (clojure.string/replace "_" " ")))
 
 ;; ===== navigation 
 
@@ -53,21 +55,30 @@
   (when (:selected-image data)
     (println "making seslected image url")
     (println (make-s3-url (:selected-image data)))
-    (dom/div #js {:class "img-box"}
+    (dom/div nil
+      (dom/div #js {:class "img-box"}
              (dom/img #js {:src (make-s3-url (:selected-image data)) 
                            :width  500
                            :onLoad (do 
                                      (swap! app-state assoc :text (format-title (:selected-image data)))
                                      (swap! app-state assoc :loading? false))
                            :height 500}
-                         nil))))
+                         nil))
+      (dom/h3 #js {:className "bg-black pl2 pt2 pb2 pr2 tc"} (:text data)))))
+
+(defn render-about [data]
+  (dom/div #js {:className (bg-style)} 
+    (dom/p nil "Photos by Ken Burns.")
+    (dom/p nil "Direction by Marcus B. Flemming.")
+    (dom/p nil "</web> by Brian Hurlow.")
+    (dom/p nil "A website the showcases the wonderful variety of words written on walls in NYC.")))
 
 (defn render-main [data]
   (case (:hash data)
     "#" (if (nil? (:selected-image data))
           (dom/img #js {:className "w-60 center db pointer" :src "/img/crystal_ball.jpeg"} nil)
           (render-image data))
-    "#about" (dom/h1 nil "ABOUT PAGE")
+    "#about" (render-about data)
     :else (dom/p nil "nope")))
 
 (defn root-component [data owner]
@@ -75,17 +86,17 @@
     om/IRender
     (render [this]
       (dom/div #js {:className "frame mw6 center"}
-        (dom/a #js {:href "#"} 
-           (dom/h1 #js {:className "bg-black pl2 pt2 pb2 pr2 tc"} "WORDSONWALLS.nyc"))
+        (dom/a #js {:href "#" :className "white"} 
+           (dom/h1 #js {:className "bg-black pl2 pt2 pb2 pr2 tc"} "WORDSONWALLS.NYC"))
+        ; tbh
         ; (when (:loading? data)
         ;   (dom/div #js {:className "w-100 bg-black tc pt1 pb1 absolute "} (dom/p nil "~ LOADING IMAGE ~")))
         (render-main data)
-        (dom/h3 #js {:className "bg-black pl2 pt2 pb2 pr2 tc"} (:text data))
-        (dom/footer #js {:className (str "fixed bottom-1 w6 " (bg-style))}
+        (dom/footer #js {:className (str "mt2 " (bg-style))}
           (dom/div #js {:className "w-100"}
             (dom/p #js {:className ""} (dom/a #js {:href "#about" :className "white"} "about wordsonwalls"))
             (dom/p #js {:className "f7"} "made by: Ken, Marcus, Brian")
-            (dom/p nil "v0.3")))))))
+            (dom/p nil "v0.4")))))))
 
 (om/root root-component app-state
   {:target (. js/document (getElementById "world"))})

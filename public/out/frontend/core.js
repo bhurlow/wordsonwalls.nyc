@@ -32,7 +32,7 @@ return cljs.core.rand_nth.call(null,new cljs.core.Keyword(null,"s3-keys","s3-key
 }));
 });
 frontend.core.format_title = (function frontend$core$format_title(k){
-return [cljs.core.str(cljs.core.first.call(null,clojure.string.split.call(null,k,/\./)))].join('');
+return clojure.string.replace.call(null,[cljs.core.str(cljs.core.first.call(null,clojure.string.split.call(null,k,/\./)))].join(''),"_"," ");
 });
 frontend.core.bg_style = (function frontend$core$bg_style(){
 return "bg-black pa2";
@@ -43,29 +43,32 @@ cljs.core.println.call(null,"making seslected image url");
 
 cljs.core.println.call(null,frontend.core.make_s3_url.call(null,new cljs.core.Keyword(null,"selected-image","selected-image",821836981).cljs$core$IFn$_invoke$arity$1(data)));
 
-return React.DOM.div(({"class": "img-box"}),om.util.force_children.call(null,React.DOM.img(({"src": frontend.core.make_s3_url.call(null,new cljs.core.Keyword(null,"selected-image","selected-image",821836981).cljs$core$IFn$_invoke$arity$1(data)), "width": (500), "onLoad": (function (){
+return React.DOM.div(null,om.util.force_children.call(null,React.DOM.div(({"class": "img-box"}),om.util.force_children.call(null,React.DOM.img(({"src": frontend.core.make_s3_url.call(null,new cljs.core.Keyword(null,"selected-image","selected-image",821836981).cljs$core$IFn$_invoke$arity$1(data)), "width": (500), "onLoad": (function (){
 cljs.core.swap_BANG_.call(null,frontend.core.app_state,cljs.core.assoc,new cljs.core.Keyword(null,"text","text",-1790561697),frontend.core.format_title.call(null,new cljs.core.Keyword(null,"selected-image","selected-image",821836981).cljs$core$IFn$_invoke$arity$1(data)));
 
 return cljs.core.swap_BANG_.call(null,frontend.core.app_state,cljs.core.assoc,new cljs.core.Keyword(null,"loading?","loading?",1905707049),false);
 })()
-, "height": (500)}),om.util.force_children.call(null,null))));
+, "height": (500)}),om.util.force_children.call(null,null))))),om.util.force_children.call(null,React.DOM.h3(({"className": "bg-black pl2 pt2 pb2 pr2 tc"}),om.util.force_children.call(null,new cljs.core.Keyword(null,"text","text",-1790561697).cljs$core$IFn$_invoke$arity$1(data)))));
 } else {
 return null;
 }
 });
+frontend.core.render_about = (function frontend$core$render_about(data){
+return React.DOM.div(({"className": frontend.core.bg_style.call(null)}),om.util.force_children.call(null,React.DOM.p(null,om.util.force_children.call(null,"Photos by Ken Burns."))),om.util.force_children.call(null,React.DOM.p(null,om.util.force_children.call(null,"Direction by Marcus B. Flemming."))),om.util.force_children.call(null,React.DOM.p(null,om.util.force_children.call(null,"</web> by Brian Hurlow."))),om.util.force_children.call(null,React.DOM.p(null,om.util.force_children.call(null,"A website the showcases the wonderful variety of words written on walls in NYC."))));
+});
 frontend.core.render_main = (function frontend$core$render_main(data){
-var G__18670 = new cljs.core.Keyword(null,"hash","hash",-13781596).cljs$core$IFn$_invoke$arity$1(data);
-if(cljs.core._EQ_.call(null,"#",G__18670)){
+var G__19188 = new cljs.core.Keyword(null,"hash","hash",-13781596).cljs$core$IFn$_invoke$arity$1(data);
+if(cljs.core._EQ_.call(null,"#",G__19188)){
 if((new cljs.core.Keyword(null,"selected-image","selected-image",821836981).cljs$core$IFn$_invoke$arity$1(data) == null)){
 return React.DOM.img(({"className": "w-60 center db pointer", "src": "/img/crystal_ball.jpeg"}),om.util.force_children.call(null,null));
 } else {
 return frontend.core.render_image.call(null,data);
 }
 } else {
-if(cljs.core._EQ_.call(null,"#about",G__18670)){
-return React.DOM.h1(null,om.util.force_children.call(null,"ABOUT PAGE"));
+if(cljs.core._EQ_.call(null,"#about",G__19188)){
+return frontend.core.render_about.call(null,data);
 } else {
-if(cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"else","else",-1508377146),G__18670)){
+if(cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"else","else",-1508377146),G__19188)){
 return React.DOM.p(null,om.util.force_children.call(null,"nope"));
 } else {
 throw (new Error([cljs.core.str("No matching clause: "),cljs.core.str(new cljs.core.Keyword(null,"hash","hash",-13781596).cljs$core$IFn$_invoke$arity$1(data))].join('')));
@@ -75,7 +78,7 @@ throw (new Error([cljs.core.str("No matching clause: "),cljs.core.str(new cljs.c
 }
 });
 frontend.core.root_component = (function frontend$core$root_component(data,owner){
-if(typeof frontend.core.t_frontend$core18674 !== 'undefined'){
+if(typeof frontend.core.t_frontend$core19192 !== 'undefined'){
 } else {
 
 /**
@@ -84,53 +87,53 @@ if(typeof frontend.core.t_frontend$core18674 !== 'undefined'){
  * @implements {cljs.core.IMeta}
  * @implements {cljs.core.IWithMeta}
 */
-frontend.core.t_frontend$core18674 = (function (root_component,data,owner,meta18675){
+frontend.core.t_frontend$core19192 = (function (root_component,data,owner,meta19193){
 this.root_component = root_component;
 this.data = data;
 this.owner = owner;
-this.meta18675 = meta18675;
+this.meta19193 = meta19193;
 this.cljs$lang$protocol_mask$partition0$ = 393216;
 this.cljs$lang$protocol_mask$partition1$ = 0;
 })
-frontend.core.t_frontend$core18674.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = (function (_18676,meta18675__$1){
+frontend.core.t_frontend$core19192.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = (function (_19194,meta19193__$1){
 var self__ = this;
-var _18676__$1 = this;
-return (new frontend.core.t_frontend$core18674(self__.root_component,self__.data,self__.owner,meta18675__$1));
+var _19194__$1 = this;
+return (new frontend.core.t_frontend$core19192(self__.root_component,self__.data,self__.owner,meta19193__$1));
 });
 
-frontend.core.t_frontend$core18674.prototype.cljs$core$IMeta$_meta$arity$1 = (function (_18676){
+frontend.core.t_frontend$core19192.prototype.cljs$core$IMeta$_meta$arity$1 = (function (_19194){
 var self__ = this;
-var _18676__$1 = this;
-return self__.meta18675;
+var _19194__$1 = this;
+return self__.meta19193;
 });
 
-frontend.core.t_frontend$core18674.prototype.om$core$IRender$ = true;
+frontend.core.t_frontend$core19192.prototype.om$core$IRender$ = true;
 
-frontend.core.t_frontend$core18674.prototype.om$core$IRender$render$arity$1 = (function (this$){
+frontend.core.t_frontend$core19192.prototype.om$core$IRender$render$arity$1 = (function (this$){
 var self__ = this;
 var this$__$1 = this;
-return React.DOM.div(({"className": "frame mw6 center"}),om.util.force_children.call(null,React.DOM.a(({"href": "#"}),om.util.force_children.call(null,React.DOM.h1(({"className": "bg-black pl2 pt2 pb2 pr2 tc"}),om.util.force_children.call(null,"WORDSONWALLS.nyc"))))),om.util.force_children.call(null,frontend.core.render_main.call(null,self__.data)),om.util.force_children.call(null,React.DOM.h3(({"className": "bg-black pl2 pt2 pb2 pr2 tc"}),om.util.force_children.call(null,new cljs.core.Keyword(null,"text","text",-1790561697).cljs$core$IFn$_invoke$arity$1(self__.data)))),om.util.force_children.call(null,React.DOM.footer(({"className": [cljs.core.str("fixed bottom-1 w6 "),cljs.core.str(frontend.core.bg_style.call(null))].join('')}),om.util.force_children.call(null,React.DOM.div(({"className": "w-100"}),om.util.force_children.call(null,React.DOM.p(({"className": ""}),om.util.force_children.call(null,React.DOM.a(({"href": "#about", "className": "white"}),om.util.force_children.call(null,"about wordsonwalls"))))),om.util.force_children.call(null,React.DOM.p(({"className": "f7"}),om.util.force_children.call(null,"made by: Ken, Marcus, Brian"))),om.util.force_children.call(null,React.DOM.p(null,om.util.force_children.call(null,"v0.3"))))))));
+return React.DOM.div(({"className": "frame mw6 center"}),om.util.force_children.call(null,React.DOM.a(({"href": "#", "className": "white"}),om.util.force_children.call(null,React.DOM.h1(({"className": "bg-black pl2 pt2 pb2 pr2 tc"}),om.util.force_children.call(null,"WORDSONWALLS.NYC"))))),om.util.force_children.call(null,frontend.core.render_main.call(null,self__.data)),om.util.force_children.call(null,React.DOM.footer(({"className": [cljs.core.str("mt2 "),cljs.core.str(frontend.core.bg_style.call(null))].join('')}),om.util.force_children.call(null,React.DOM.div(({"className": "w-100"}),om.util.force_children.call(null,React.DOM.p(({"className": ""}),om.util.force_children.call(null,React.DOM.a(({"href": "#about", "className": "white"}),om.util.force_children.call(null,"about wordsonwalls"))))),om.util.force_children.call(null,React.DOM.p(({"className": "f7"}),om.util.force_children.call(null,"made by: Ken, Marcus, Brian"))),om.util.force_children.call(null,React.DOM.p(null,om.util.force_children.call(null,"v0.4"))))))));
 });
 
-frontend.core.t_frontend$core18674.getBasis = (function (){
-return new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.with_meta(new cljs.core.Symbol(null,"root-component","root-component",-166494948,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"arglists","arglists",1661989754),cljs.core.list(new cljs.core.Symbol(null,"quote","quote",1377916282,null),cljs.core.list(new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"data","data",1407862150,null),new cljs.core.Symbol(null,"owner","owner",1247919588,null)], null)))], null)),new cljs.core.Symbol(null,"data","data",1407862150,null),new cljs.core.Symbol(null,"owner","owner",1247919588,null),new cljs.core.Symbol(null,"meta18675","meta18675",33505220,null)], null);
+frontend.core.t_frontend$core19192.getBasis = (function (){
+return new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.with_meta(new cljs.core.Symbol(null,"root-component","root-component",-166494948,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"arglists","arglists",1661989754),cljs.core.list(new cljs.core.Symbol(null,"quote","quote",1377916282,null),cljs.core.list(new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"data","data",1407862150,null),new cljs.core.Symbol(null,"owner","owner",1247919588,null)], null)))], null)),new cljs.core.Symbol(null,"data","data",1407862150,null),new cljs.core.Symbol(null,"owner","owner",1247919588,null),new cljs.core.Symbol(null,"meta19193","meta19193",-1512813000,null)], null);
 });
 
-frontend.core.t_frontend$core18674.cljs$lang$type = true;
+frontend.core.t_frontend$core19192.cljs$lang$type = true;
 
-frontend.core.t_frontend$core18674.cljs$lang$ctorStr = "frontend.core/t_frontend$core18674";
+frontend.core.t_frontend$core19192.cljs$lang$ctorStr = "frontend.core/t_frontend$core19192";
 
-frontend.core.t_frontend$core18674.cljs$lang$ctorPrWriter = (function (this__14992__auto__,writer__14993__auto__,opt__14994__auto__){
-return cljs.core._write.call(null,writer__14993__auto__,"frontend.core/t_frontend$core18674");
+frontend.core.t_frontend$core19192.cljs$lang$ctorPrWriter = (function (this__14992__auto__,writer__14993__auto__,opt__14994__auto__){
+return cljs.core._write.call(null,writer__14993__auto__,"frontend.core/t_frontend$core19192");
 });
 
-frontend.core.__GT_t_frontend$core18674 = (function frontend$core$root_component_$___GT_t_frontend$core18674(root_component__$1,data__$1,owner__$1,meta18675){
-return (new frontend.core.t_frontend$core18674(root_component__$1,data__$1,owner__$1,meta18675));
+frontend.core.__GT_t_frontend$core19192 = (function frontend$core$root_component_$___GT_t_frontend$core19192(root_component__$1,data__$1,owner__$1,meta19193){
+return (new frontend.core.t_frontend$core19192(root_component__$1,data__$1,owner__$1,meta19193));
 });
 
 }
 
-return (new frontend.core.t_frontend$core18674(frontend$core$root_component,data,owner,cljs.core.PersistentArrayMap.EMPTY));
+return (new frontend.core.t_frontend$core19192(frontend$core$root_component,data,owner,cljs.core.PersistentArrayMap.EMPTY));
 });
 om.core.root.call(null,frontend.core.root_component,frontend.core.app_state,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"target","target",253001721),document.getElementById("world")], null));
 frontend.core.init_images = (function frontend$core$init_images(){

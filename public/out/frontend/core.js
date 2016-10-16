@@ -54,18 +54,18 @@ return null;
 }
 });
 frontend.core.render_main = (function frontend$core$render_main(data){
-var G__18470 = new cljs.core.Keyword(null,"hash","hash",-13781596).cljs$core$IFn$_invoke$arity$1(data);
-if(cljs.core._EQ_.call(null,"#",G__18470)){
+var G__18670 = new cljs.core.Keyword(null,"hash","hash",-13781596).cljs$core$IFn$_invoke$arity$1(data);
+if(cljs.core._EQ_.call(null,"#",G__18670)){
 if((new cljs.core.Keyword(null,"selected-image","selected-image",821836981).cljs$core$IFn$_invoke$arity$1(data) == null)){
 return React.DOM.img(({"className": "w-60 center db pointer", "src": "/img/crystal_ball.jpeg"}),om.util.force_children.call(null,null));
 } else {
 return frontend.core.render_image.call(null,data);
 }
 } else {
-if(cljs.core._EQ_.call(null,"#about",G__18470)){
+if(cljs.core._EQ_.call(null,"#about",G__18670)){
 return React.DOM.h1(null,om.util.force_children.call(null,"ABOUT PAGE"));
 } else {
-if(cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"else","else",-1508377146),G__18470)){
+if(cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"else","else",-1508377146),G__18670)){
 return React.DOM.p(null,om.util.force_children.call(null,"nope"));
 } else {
 throw (new Error([cljs.core.str("No matching clause: "),cljs.core.str(new cljs.core.Keyword(null,"hash","hash",-13781596).cljs$core$IFn$_invoke$arity$1(data))].join('')));
@@ -75,7 +75,7 @@ throw (new Error([cljs.core.str("No matching clause: "),cljs.core.str(new cljs.c
 }
 });
 frontend.core.root_component = (function frontend$core$root_component(data,owner){
-if(typeof frontend.core.t_frontend$core18474 !== 'undefined'){
+if(typeof frontend.core.t_frontend$core18674 !== 'undefined'){
 } else {
 
 /**
@@ -84,53 +84,53 @@ if(typeof frontend.core.t_frontend$core18474 !== 'undefined'){
  * @implements {cljs.core.IMeta}
  * @implements {cljs.core.IWithMeta}
 */
-frontend.core.t_frontend$core18474 = (function (root_component,data,owner,meta18475){
+frontend.core.t_frontend$core18674 = (function (root_component,data,owner,meta18675){
 this.root_component = root_component;
 this.data = data;
 this.owner = owner;
-this.meta18475 = meta18475;
+this.meta18675 = meta18675;
 this.cljs$lang$protocol_mask$partition0$ = 393216;
 this.cljs$lang$protocol_mask$partition1$ = 0;
 })
-frontend.core.t_frontend$core18474.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = (function (_18476,meta18475__$1){
+frontend.core.t_frontend$core18674.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = (function (_18676,meta18675__$1){
 var self__ = this;
-var _18476__$1 = this;
-return (new frontend.core.t_frontend$core18474(self__.root_component,self__.data,self__.owner,meta18475__$1));
+var _18676__$1 = this;
+return (new frontend.core.t_frontend$core18674(self__.root_component,self__.data,self__.owner,meta18675__$1));
 });
 
-frontend.core.t_frontend$core18474.prototype.cljs$core$IMeta$_meta$arity$1 = (function (_18476){
+frontend.core.t_frontend$core18674.prototype.cljs$core$IMeta$_meta$arity$1 = (function (_18676){
 var self__ = this;
-var _18476__$1 = this;
-return self__.meta18475;
+var _18676__$1 = this;
+return self__.meta18675;
 });
 
-frontend.core.t_frontend$core18474.prototype.om$core$IRender$ = true;
+frontend.core.t_frontend$core18674.prototype.om$core$IRender$ = true;
 
-frontend.core.t_frontend$core18474.prototype.om$core$IRender$render$arity$1 = (function (this$){
+frontend.core.t_frontend$core18674.prototype.om$core$IRender$render$arity$1 = (function (this$){
 var self__ = this;
 var this$__$1 = this;
-return React.DOM.div(({"className": "frame mw6 center"}),om.util.force_children.call(null,React.DOM.h1(({"className": "bg-black pl2 pt2 pb2 pr2 tc"}),om.util.force_children.call(null,"WORDSONWALLS.nyc"))),om.util.force_children.call(null,frontend.core.render_main.call(null,self__.data)),om.util.force_children.call(null,React.DOM.h3(({"className": "bg-black pl2 pt2 pb2 pr2 tc"}),om.util.force_children.call(null,new cljs.core.Keyword(null,"text","text",-1790561697).cljs$core$IFn$_invoke$arity$1(self__.data)))),om.util.force_children.call(null,React.DOM.footer(({"className": [cljs.core.str("fixed bottom-1 w6 "),cljs.core.str(frontend.core.bg_style.call(null))].join('')}),om.util.force_children.call(null,React.DOM.div(({"className": "w-100"}),om.util.force_children.call(null,React.DOM.p(({"className": ""}),om.util.force_children.call(null,React.DOM.a(({"href": "#about", "className": "white"}),om.util.force_children.call(null,"about wordsonwalls"))))),om.util.force_children.call(null,React.DOM.p(({"className": "f7"}),om.util.force_children.call(null,"made by: Ken, Marcus, Brian"))),om.util.force_children.call(null,React.DOM.p(null,om.util.force_children.call(null,"v0.3"))))))));
+return React.DOM.div(({"className": "frame mw6 center"}),om.util.force_children.call(null,React.DOM.a(({"href": "#"}),om.util.force_children.call(null,React.DOM.h1(({"className": "bg-black pl2 pt2 pb2 pr2 tc"}),om.util.force_children.call(null,"WORDSONWALLS.nyc"))))),om.util.force_children.call(null,frontend.core.render_main.call(null,self__.data)),om.util.force_children.call(null,React.DOM.h3(({"className": "bg-black pl2 pt2 pb2 pr2 tc"}),om.util.force_children.call(null,new cljs.core.Keyword(null,"text","text",-1790561697).cljs$core$IFn$_invoke$arity$1(self__.data)))),om.util.force_children.call(null,React.DOM.footer(({"className": [cljs.core.str("fixed bottom-1 w6 "),cljs.core.str(frontend.core.bg_style.call(null))].join('')}),om.util.force_children.call(null,React.DOM.div(({"className": "w-100"}),om.util.force_children.call(null,React.DOM.p(({"className": ""}),om.util.force_children.call(null,React.DOM.a(({"href": "#about", "className": "white"}),om.util.force_children.call(null,"about wordsonwalls"))))),om.util.force_children.call(null,React.DOM.p(({"className": "f7"}),om.util.force_children.call(null,"made by: Ken, Marcus, Brian"))),om.util.force_children.call(null,React.DOM.p(null,om.util.force_children.call(null,"v0.3"))))))));
 });
 
-frontend.core.t_frontend$core18474.getBasis = (function (){
-return new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.with_meta(new cljs.core.Symbol(null,"root-component","root-component",-166494948,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"arglists","arglists",1661989754),cljs.core.list(new cljs.core.Symbol(null,"quote","quote",1377916282,null),cljs.core.list(new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"data","data",1407862150,null),new cljs.core.Symbol(null,"owner","owner",1247919588,null)], null)))], null)),new cljs.core.Symbol(null,"data","data",1407862150,null),new cljs.core.Symbol(null,"owner","owner",1247919588,null),new cljs.core.Symbol(null,"meta18475","meta18475",-646829589,null)], null);
+frontend.core.t_frontend$core18674.getBasis = (function (){
+return new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.with_meta(new cljs.core.Symbol(null,"root-component","root-component",-166494948,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"arglists","arglists",1661989754),cljs.core.list(new cljs.core.Symbol(null,"quote","quote",1377916282,null),cljs.core.list(new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"data","data",1407862150,null),new cljs.core.Symbol(null,"owner","owner",1247919588,null)], null)))], null)),new cljs.core.Symbol(null,"data","data",1407862150,null),new cljs.core.Symbol(null,"owner","owner",1247919588,null),new cljs.core.Symbol(null,"meta18675","meta18675",33505220,null)], null);
 });
 
-frontend.core.t_frontend$core18474.cljs$lang$type = true;
+frontend.core.t_frontend$core18674.cljs$lang$type = true;
 
-frontend.core.t_frontend$core18474.cljs$lang$ctorStr = "frontend.core/t_frontend$core18474";
+frontend.core.t_frontend$core18674.cljs$lang$ctorStr = "frontend.core/t_frontend$core18674";
 
-frontend.core.t_frontend$core18474.cljs$lang$ctorPrWriter = (function (this__14992__auto__,writer__14993__auto__,opt__14994__auto__){
-return cljs.core._write.call(null,writer__14993__auto__,"frontend.core/t_frontend$core18474");
+frontend.core.t_frontend$core18674.cljs$lang$ctorPrWriter = (function (this__14992__auto__,writer__14993__auto__,opt__14994__auto__){
+return cljs.core._write.call(null,writer__14993__auto__,"frontend.core/t_frontend$core18674");
 });
 
-frontend.core.__GT_t_frontend$core18474 = (function frontend$core$root_component_$___GT_t_frontend$core18474(root_component__$1,data__$1,owner__$1,meta18475){
-return (new frontend.core.t_frontend$core18474(root_component__$1,data__$1,owner__$1,meta18475));
+frontend.core.__GT_t_frontend$core18674 = (function frontend$core$root_component_$___GT_t_frontend$core18674(root_component__$1,data__$1,owner__$1,meta18675){
+return (new frontend.core.t_frontend$core18674(root_component__$1,data__$1,owner__$1,meta18675));
 });
 
 }
 
-return (new frontend.core.t_frontend$core18474(frontend$core$root_component,data,owner,cljs.core.PersistentArrayMap.EMPTY));
+return (new frontend.core.t_frontend$core18674(frontend$core$root_component,data,owner,cljs.core.PersistentArrayMap.EMPTY));
 });
 om.core.root.call(null,frontend.core.root_component,frontend.core.app_state,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"target","target",253001721),document.getElementById("world")], null));
 frontend.core.init_images = (function frontend$core$init_images(){
@@ -143,15 +143,23 @@ cljs.core.swap_BANG_.call(null,frontend.core.app_state,cljs.core.assoc,new cljs.
 
 return (window["onclick"] = frontend.core.cycle_image);
 }));
+frontend.core.get_hash = (function frontend$core$get_hash(){
+var hash = ((window["location"])["hash"]);
+if(cljs.core.empty_QMARK_.call(null,hash)){
+return "#";
+} else {
+return hash;
+}
+});
 frontend.core.on_location_change = (function frontend$core$on_location_change(e){
-return cljs.core.println.call(null,"location change");
+cljs.core.println.call(null,"setting location",frontend.core.get_hash.call(null));
+
+return cljs.core.swap_BANG_.call(null,frontend.core.app_state,cljs.core.assoc,new cljs.core.Keyword(null,"hash","hash",-13781596),frontend.core.get_hash.call(null));
 });
 frontend.core.init_location = (function frontend$core$init_location(){
-(window["onbeforeunload"] = frontend.core.on_location_change);
+(window["onhashchange"] = frontend.core.on_location_change);
 
-var hash = ((window["location"])["hash"]);
-var hash__$1 = ((cljs.core.empty_QMARK_.call(null,hash))?"#":hash);
-return cljs.core.swap_BANG_.call(null,frontend.core.app_state,cljs.core.assoc,new cljs.core.Keyword(null,"hash","hash",-13781596),hash__$1);
+return cljs.core.swap_BANG_.call(null,frontend.core.app_state,cljs.core.assoc,new cljs.core.Keyword(null,"hash","hash",-13781596),frontend.core.get_hash.call(null));
 });
 frontend.core.init = (function frontend$core$init(){
 frontend.core.init_location.call(null);

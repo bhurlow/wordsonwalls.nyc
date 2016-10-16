@@ -75,7 +75,8 @@
     om/IRender
     (render [this]
       (dom/div #js {:className "frame mw6 center"}
-        (dom/h1 #js {:className "bg-black pl2 pt2 pb2 pr2 tc"} "WORDSONWALLS.nyc")
+        (dom/a #js {:href "#"} 
+           (dom/h1 #js {:className "bg-black pl2 pt2 pb2 pr2 tc"} "WORDSONWALLS.nyc"))
         ; (when (:loading? data)
         ;   (dom/div #js {:className "w-100 bg-black tc pt1 pb1 absolute "} (dom/p nil "~ LOADING IMAGE ~")))
         (render-main data)
@@ -100,14 +101,17 @@
       (swap! app-state assoc :text "Fortunes from the Streets to You")
       (aset js/window "onclick" cycle-image)))
 
+(defn get-hash []
+  (let [hash (aget (aget js/window "location") "hash")]
+    (if (empty? hash) "#" hash)))
+
 (defn on-location-change [e]
-  (println "location change"))
+  (println "setting location" (get-hash))
+  (swap! app-state assoc :hash (get-hash)))
 
 (defn init-location []
-  (aset js/window "onbeforeunload" on-location-change)
-  (let [hash (aget (aget js/window "location") "hash")
-        hash (if (empty? hash) "#" hash)]
-    (swap! app-state assoc :hash hash)))
+  (aset js/window "onhashchange" on-location-change)
+  (swap! app-state assoc :hash (get-hash)))
 
 (defn init []
   (init-location)

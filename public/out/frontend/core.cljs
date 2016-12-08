@@ -11,6 +11,7 @@
 ;     (repl/connect "http://localhost:9000/repl")))
 
 (enable-console-print!)
+(println "START")
 
 (defn reload-all []
   (require 'frontend.core :reload))

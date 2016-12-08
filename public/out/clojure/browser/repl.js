@@ -11,51 +11,51 @@ goog.require('cljs.repl');
 clojure.browser.repl.xpc_connection = cljs.core.atom.call(null,null);
 clojure.browser.repl.print_queue = [];
 clojure.browser.repl.flush_print_queue_BANG_ = (function clojure$browser$repl$flush_print_queue_BANG_(conn){
-var seq__18142_18146 = cljs.core.seq.call(null,clojure.browser.repl.print_queue);
-var chunk__18143_18147 = null;
-var count__18144_18148 = (0);
-var i__18145_18149 = (0);
+var seq__18140_18144 = cljs.core.seq.call(null,clojure.browser.repl.print_queue);
+var chunk__18141_18145 = null;
+var count__18142_18146 = (0);
+var i__18143_18147 = (0);
 while(true){
-if((i__18145_18149 < count__18144_18148)){
-var str_18150 = cljs.core._nth.call(null,chunk__18143_18147,i__18145_18149);
-clojure.browser.net.transmit.call(null,conn,new cljs.core.Keyword(null,"print","print",1299562414),str_18150);
+if((i__18143_18147 < count__18142_18146)){
+var str_18148 = cljs.core._nth.call(null,chunk__18141_18145,i__18143_18147);
+clojure.browser.net.transmit.call(null,conn,new cljs.core.Keyword(null,"print","print",1299562414),str_18148);
 
-var G__18151 = seq__18142_18146;
-var G__18152 = chunk__18143_18147;
-var G__18153 = count__18144_18148;
-var G__18154 = (i__18145_18149 + (1));
-seq__18142_18146 = G__18151;
-chunk__18143_18147 = G__18152;
-count__18144_18148 = G__18153;
-i__18145_18149 = G__18154;
+var G__18149 = seq__18140_18144;
+var G__18150 = chunk__18141_18145;
+var G__18151 = count__18142_18146;
+var G__18152 = (i__18143_18147 + (1));
+seq__18140_18144 = G__18149;
+chunk__18141_18145 = G__18150;
+count__18142_18146 = G__18151;
+i__18143_18147 = G__18152;
 continue;
 } else {
-var temp__426__auto___18155 = cljs.core.seq.call(null,seq__18142_18146);
-if(temp__426__auto___18155){
-var seq__18142_18156__$1 = temp__426__auto___18155;
-if(cljs.core.chunked_seq_QMARK_.call(null,seq__18142_18156__$1)){
-var c__15245__auto___18157 = cljs.core.chunk_first.call(null,seq__18142_18156__$1);
-var G__18158 = cljs.core.chunk_rest.call(null,seq__18142_18156__$1);
-var G__18159 = c__15245__auto___18157;
-var G__18160 = cljs.core.count.call(null,c__15245__auto___18157);
-var G__18161 = (0);
-seq__18142_18146 = G__18158;
-chunk__18143_18147 = G__18159;
-count__18144_18148 = G__18160;
-i__18145_18149 = G__18161;
+var temp__426__auto___18153 = cljs.core.seq.call(null,seq__18140_18144);
+if(temp__426__auto___18153){
+var seq__18140_18154__$1 = temp__426__auto___18153;
+if(cljs.core.chunked_seq_QMARK_.call(null,seq__18140_18154__$1)){
+var c__15243__auto___18155 = cljs.core.chunk_first.call(null,seq__18140_18154__$1);
+var G__18156 = cljs.core.chunk_rest.call(null,seq__18140_18154__$1);
+var G__18157 = c__15243__auto___18155;
+var G__18158 = cljs.core.count.call(null,c__15243__auto___18155);
+var G__18159 = (0);
+seq__18140_18144 = G__18156;
+chunk__18141_18145 = G__18157;
+count__18142_18146 = G__18158;
+i__18143_18147 = G__18159;
 continue;
 } else {
-var str_18162 = cljs.core.first.call(null,seq__18142_18156__$1);
-clojure.browser.net.transmit.call(null,conn,new cljs.core.Keyword(null,"print","print",1299562414),str_18162);
+var str_18160 = cljs.core.first.call(null,seq__18140_18154__$1);
+clojure.browser.net.transmit.call(null,conn,new cljs.core.Keyword(null,"print","print",1299562414),str_18160);
 
-var G__18163 = cljs.core.next.call(null,seq__18142_18156__$1);
-var G__18164 = null;
-var G__18165 = (0);
-var G__18166 = (0);
-seq__18142_18146 = G__18163;
-chunk__18143_18147 = G__18164;
-count__18144_18148 = G__18165;
-i__18145_18149 = G__18166;
+var G__18161 = cljs.core.next.call(null,seq__18140_18154__$1);
+var G__18162 = null;
+var G__18163 = (0);
+var G__18164 = (0);
+seq__18140_18144 = G__18161;
+chunk__18141_18145 = G__18162;
+count__18142_18146 = G__18163;
+i__18143_18147 = G__18164;
 continue;
 }
 } else {
@@ -104,7 +104,7 @@ return null;
  */
 clojure.browser.repl.evaluate_javascript = (function clojure$browser$repl$evaluate_javascript(conn,block){
 var result = (function (){try{return new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"status","status",-1997798413),new cljs.core.Keyword(null,"success","success",1890645906),new cljs.core.Keyword(null,"value","value",305978217),[cljs.core.str(eval(block))].join('')], null);
-}catch (e18168){var e = e18168;
+}catch (e18166){var e = e18166;
 return new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"status","status",-1997798413),new cljs.core.Keyword(null,"exception","exception",-335277064),new cljs.core.Keyword(null,"ua-product","ua-product",938384227),clojure.browser.repl.get_ua_product.call(null),new cljs.core.Keyword(null,"value","value",305978217),[cljs.core.str(e)].join(''),new cljs.core.Keyword(null,"stacktrace","stacktrace",-95588394),(cljs.core.truth_(e.hasOwnProperty("stack"))?e.stack:"No stacktrace available.")], null);
 }})();
 return cljs.core.pr_str.call(null,result);
@@ -117,23 +117,23 @@ return clojure.browser.net.transmit.call(null,connection,url,"POST",data,null,(0
  *   up to 10 times.
  */
 clojure.browser.repl.send_print = (function clojure$browser$repl$send_print(var_args){
-var args18169 = [];
-var len__15525__auto___18172 = arguments.length;
-var i__15526__auto___18173 = (0);
+var args18167 = [];
+var len__15523__auto___18170 = arguments.length;
+var i__15524__auto___18171 = (0);
 while(true){
-if((i__15526__auto___18173 < len__15525__auto___18172)){
-args18169.push((arguments[i__15526__auto___18173]));
+if((i__15524__auto___18171 < len__15523__auto___18170)){
+args18167.push((arguments[i__15524__auto___18171]));
 
-var G__18174 = (i__15526__auto___18173 + (1));
-i__15526__auto___18173 = G__18174;
+var G__18172 = (i__15524__auto___18171 + (1));
+i__15524__auto___18171 = G__18172;
 continue;
 } else {
 }
 break;
 }
 
-var G__18171 = args18169.length;
-switch (G__18171) {
+var G__18169 = args18167.length;
+switch (G__18169) {
 case 2:
 return clojure.browser.repl.send_print.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
 
@@ -143,7 +143,7 @@ return clojure.browser.repl.send_print.cljs$core$IFn$_invoke$arity$3((arguments[
 
 break;
 default:
-throw (new Error([cljs.core.str("Invalid arity: "),cljs.core.str(args18169.length)].join('')));
+throw (new Error([cljs.core.str("Invalid arity: "),cljs.core.str(args18167.length)].join('')));
 
 }
 });
@@ -231,11 +231,11 @@ goog.writeScriptTag__ = (function (src,opt_sourceText){
 var loaded = cljs.core.atom.call(null,false);
 var onload = ((function (loaded){
 return (function (){
-if(cljs.core.truth_((function (){var and__14330__auto__ = clojure.browser.repl.load_queue;
-if(cljs.core.truth_(and__14330__auto__)){
+if(cljs.core.truth_((function (){var and__14328__auto__ = clojure.browser.repl.load_queue;
+if(cljs.core.truth_(and__14328__auto__)){
 return cljs.core.deref.call(null,loaded) === false;
 } else {
-return and__14330__auto__;
+return and__14328__auto__;
 }
 })())){
 cljs.core.swap_BANG_.call(null,loaded,cljs.core.not);
@@ -251,25 +251,25 @@ return null;
 });})(loaded))
 ;
 return document.body.appendChild((function (){var script = document.createElement("script");
-var script__$1 = (function (){var G__18179 = script;
-goog.object.set(G__18179,"type","text/javascript");
+var script__$1 = (function (){var G__18177 = script;
+goog.object.set(G__18177,"type","text/javascript");
 
-goog.object.set(G__18179,"onload",onload);
+goog.object.set(G__18177,"onload",onload);
 
-goog.object.set(G__18179,"onreadystatechange",onload);
+goog.object.set(G__18177,"onreadystatechange",onload);
 
-return G__18179;
+return G__18177;
 })();
 if((opt_sourceText == null)){
-var G__18180 = script__$1;
-goog.object.set(G__18180,"src",src);
+var G__18178 = script__$1;
+goog.object.set(G__18178,"src",src);
 
-return G__18180;
+return G__18178;
 } else {
-var G__18181 = script__$1;
-goog.dom.setTextContext(G__18181,opt_sourceText);
+var G__18179 = script__$1;
+goog.dom.setTextContext(G__18179,opt_sourceText);
 
-return G__18181;
+return G__18179;
 }
 })());
 });
@@ -290,20 +290,20 @@ goog.cljsReloadAll_ = true;
 } else {
 }
 
-var reload_QMARK_ = (function (){var or__14342__auto__ = reload;
-if(cljs.core.truth_(or__14342__auto__)){
-return or__14342__auto__;
+var reload_QMARK_ = (function (){var or__14340__auto__ = reload;
+if(cljs.core.truth_(or__14340__auto__)){
+return or__14340__auto__;
 } else {
 return goog.cljsReloadAll__;
 }
 })();
 if(cljs.core.truth_(reload_QMARK_)){
-var path_18182 = (goog.dependencies_.nameToPath[src]);
-goog.object.remove(goog.dependencies_.visited,path_18182);
+var path_18180 = (goog.dependencies_.nameToPath[src]);
+goog.object.remove(goog.dependencies_.visited,path_18180);
 
-goog.object.remove(goog.dependencies_.written,path_18182);
+goog.object.remove(goog.dependencies_.written,path_18180);
 
-goog.object.remove(goog.dependencies_.written,[cljs.core.str(goog.basePath),cljs.core.str(path_18182)].join(''));
+goog.object.remove(goog.dependencies_.written,[cljs.core.str(goog.basePath),cljs.core.str(path_18180)].join(''));
 } else {
 }
 

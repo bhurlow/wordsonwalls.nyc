@@ -1,5 +1,6 @@
 (ns frontend.core
   (:require [goog.net.XhrIo :as xhr]
+            [cljsjs.react]
             [om.core :as om :include-macros true]
             [om.dom :as dom]
             [clojure.browser.repl :as repl]))
@@ -13,8 +14,8 @@
 (enable-console-print!)
 (println "START")
 
-(defn reload-all []
-  (require 'frontend.core :reload))
+; (defn reload-all []
+;   (require 'frontend.core :reload))
 
 (def app-state 
   (atom {:text "loading..."

@@ -1,0 +1,9 @@
+(foo)
+\q
+exut
+exit
+(build-advanced)
+(build)
+exit
+(build)
+exit

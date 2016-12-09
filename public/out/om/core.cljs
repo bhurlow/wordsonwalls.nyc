@@ -1,10 +1,6 @@
 (ns om.core
-  (:require-macros om.core)
-  (:require [cljsjs.react]
-            [om.dom :as dom :include-macros true]
-            [goog.object :as gobj]
-            [goog.dom :as gdom]
-            [goog.dom.dataset :as gdomdata])
+  (:require [om.dom :as dom :include-macros true]
+            [goog.dom :as gdom])
   (:import [goog.ui IdGenerator]))
 
 (def ^{:dynamic true :private true} *parent* nil)
@@ -151,7 +147,7 @@
   (-refresh-deps! [this])
   (-get-deps [this]))
 
-(declare notify*)
+(declare notify* path)
 
 (defn transact*
   ([state cursor korks f tag]
@@ -186,14 +182,9 @@
 (defn get-props
   "Given an owning Pure node return the Om props. Analogous to React
    component props."
-  ([x]
-   {:pre [(component? x)]}
-   (aget (.-props x) "__om_cursor"))
-  ([x korks]
-   {:pre [(component? x)]}
-   (let [korks (if (sequential? korks) korks [korks])]
-     (cond-> (aget (.-props x) "__om_cursor")
-       (seq korks) (get-in korks)))))
+  [x]
+  {:pre [(component? x)]}
+  (aget (.-props x) "__om_cursor"))
 
 (defn get-state
   "Returns the component local state of an owning component. owner is
@@ -442,10 +433,8 @@
 ;; =============================================================================
 ;; EXPERIMENTAL: No Local State
 
-(declare get-node)
-
 (defn react-id [x]
-  (let [id (gdomdata/get (get-node x) "reactid")]
+  (let [id (aget x "_rootNodeID")]
     (assert id)
     id))
 
@@ -465,8 +454,6 @@
               (merge (:render-state states) (:pending-state states)))
             (dissoc :pending-state)))))))
 
-(declare mounted?)
-
 (def no-local-state-methods
   (assoc pure-methods
     :getInitialState
@@ -479,18 +466,11 @@
                          (.getNextUniqueId (.getInstance IdGenerator)))
               state  (merge (dissoc istate ::id)
                        (when (satisfies? IInitState c)
-                         (init-state c)))]
-          (aset props "__om_init_state" nil)
-          #js {:__om_id om-id})))
-    :componentDidMount
-    (fn []
-      (this-as this
-        (let [c      (children this)
-              cursor (aget (.-props this) "__om_cursor")
+                         (init-state c)))
               spath  [:state-map (react-id this) :render-state]]
+          (aset props "__om_init_state" nil)
           (swap! (get-gstate this) assoc-in spath state)
-          (when (satisfies? IDidMount c)
-            (did-mount c)))))
+          #js {:__om_id om-id})))
     :componentWillMount
     (fn []
       (this-as this
@@ -498,16 +478,14 @@
         (let [c (children this)]
           (when (satisfies? IWillMount c)
             (will-mount c)))
-        ;; TODO: cannot merge state until mounted?
-        (when (mounted? this)
-          (no-local-merge-pending-state this))))
+        (no-local-merge-pending-state this)))
     :componentWillUnmount
     (fn []
       (this-as this
         (let [c (children this)]
           (when (satisfies? IWillUnmount c)
             (will-unmount c))
-          (swap! (get-gstate this) update-in [:state-map] dissoc (react-id this))
+          (swap! (get-gstate this) dissoc :state-map (react-id this))
           (when-let [refs (seq (aget (.-state this) "__om_refs"))]
             (doseq [ref refs]
               (unobserve this ref))))))
@@ -561,13 +539,10 @@
     IGetState
     (-get-state
       ([this]
-        (if (mounted? this)
-          (let [spath [:state-map (react-id this)]
+         (let [spath  [:state-map (react-id this)]
                states (get-in @(get-gstate this) spath)]
-            (or (:pending-state states)
-                (:render-state states)))
-          ;; TODO: means state cannot be written to until mounted - David
-          (aget (.-props this) "__om_init_state")))
+           (or (:pending-state states)
+               (:render-state states))))
       ([this ks]
          (get-in (-get-state this) ks)))))
 
@@ -791,16 +766,13 @@
       (commit! cursor korks f)
       (-refresh-deps! parent))))
 
-(defn ref-cursor? [x]
-  (satisfies? IOmRef x))
-
 (defn ref-cursor
   "Given a cursor return a reference cursor that inherits all of the
   properties and methods of the cursor. Reference cursors may be
   observed via om.core/observe."
   [cursor]
   {:pre [(cursor? cursor)]}
-  (if (ref-cursor? cursor)
+  (if (satisfies? IOmRef cursor)
     cursor
     (let [path    (path cursor)
           storage (get
@@ -847,7 +819,7 @@
   "Given a component and a reference cursor have the component observe
   the reference cursor for any data changes."
   [c ref]
-  {:pre [(component? c) (cursor? ref) (ref-cursor? ref)]}
+  {:pre [(component? c) (cursor? ref)]}
   (add-ref-to-component! c ref)
   (-add-dep! ref c)
   ref)
@@ -897,13 +869,12 @@
 (defn get-descriptor
   ([f] (get-descriptor f nil))
   ([f descriptor]
-   (let [rdesc (or descriptor *descriptor* pure-descriptor)]
-     (when (or (nil? (gobj/get f "om$descriptor"))
-               (not (identical? rdesc (gobj/get f "om$tag"))))
-       (let [factory (js/React.createFactory (js/React.createClass rdesc))]
-         (gobj/set f "om$descriptor" factory)
-         (gobj/set f "om$tag" rdesc))))
-   (gobj/get f "om$descriptor")))
+   (when (nil? (aget f "om$descriptor"))
+     (aset f "om$descriptor"
+       (js/React.createFactory
+         (js/React.createClass
+           (or descriptor *descriptor* pure-descriptor)))))
+   (aget f "om$descriptor")))
 
 (defn getf
   ([f cursor]
@@ -1137,7 +1108,7 @@
                   (atom value))
           state (setup state watch-key tx-listen)
           adapt (or adapt identity)
-          m     (dissoc options :target :tx-listen :path :adapt :raf)
+          m     (dissoc options :target :tx-listen :path :adapt)
           ret   (atom nil)
           rootf (fn rootf []
                   (swap! refresh-set disj rootf)
@@ -1149,7 +1120,6 @@
                                      (to-cursor (get-in value path) state path))
                                    watch-key))]
                     (when-not (-get-property state watch-key :skip-render-root)
-                      (-set-property! state watch-key :skip-render-root true)
                       (let [c (dom/render
                                 (binding [*descriptor* descriptor
                                           *instrument* instrument
@@ -1161,7 +1131,6 @@
                           (reset! ret c))))
                     ;; update state pass
                     (let [queue (-get-queue state)]
-                      (-empty-queue! state)
                       (when-not (empty? queue)
                         (doseq [c queue]
                           (when (.isMounted c)
@@ -1170,7 +1139,8 @@
                               (aset (.-state c) "__om_next_cursor" nil))
                             (when (or (not (satisfies? ICheckState (children c)))
                                       (.shouldComponentUpdate c (.-props c) (.-state c)))
-                              (.forceUpdate c))))))
+                              (.forceUpdate c))))
+                        (-empty-queue! state)))
                     ;; ref cursor pass
                     (let [_refs @_refs]
                       (when-not (empty? _refs)
@@ -1179,6 +1149,7 @@
                             (doseq [[id c] cs]
                               (when (.shouldComponentUpdate c (.-props c) (.-state c))
                                 (.forceUpdate c)))))))
+                    (-set-property! state watch-key :skip-render-root true)
                     @ret))]
       (add-watch state watch-key
         (fn [_ _ o n]
@@ -1191,12 +1162,12 @@
           (when-not refresh-queued
             (set! refresh-queued true)
             (cond
-              (fn? raf)
-              (raf)
-
               (or (false? raf)
                   (not (exists? js/requestAnimationFrame)))
               (js/setTimeout #(render-all state) 16)
+
+              (fn? raf)
+              (raf)
 
               :else
               (js/requestAnimationFrame #(render-all state))))))
@@ -1206,9 +1177,8 @@
           (-remove-properties! state watch-key)
           (remove-watch state watch-key)
           (tear-down state watch-key)
-          (swap! refresh-set disj rootf)
           (swap! roots dissoc target)
-          (js/ReactDOM.unmountComponentAtNode target)))
+          (js/React.unmountComponentAtNode target)))
       (rootf))))
 
 (defn detach-root
@@ -1272,20 +1242,14 @@
       (swap! app-state update-in rpath f))))
 
 (defn get-node
-  "A helper function to get at React DOM refs. Given a owning pure node
-  extract the DOM ref specified by name."
+  "A helper function to get at React refs. Given a owning pure node
+  extract the ref specified by name."
   ([owner]
-    (js/ReactDOM.findDOMNode owner))
+   (.getDOMNode owner))
   ([owner name]
-    {:pre [(string? name)]}
-    (some-> (.-refs owner) (aget name) (js/ReactDOM.findDOMNode))))
-
-(defn get-ref
-  "A helper function to get at React refs. Given an owning pure node extract
-  the ref specified by name."
-  [owner name]
-  {:pre [(component? owner) (string? name)]}
-  (some-> (.-refs owner) (gobj/get name)))
+   {:pre [(string? name)]}
+   (when-let [refs (.-refs owner)]
+     (.getDOMNode (aget refs name)))))
 
 (defn mounted?
   "Return true if the backing React component is mounted into the DOM."

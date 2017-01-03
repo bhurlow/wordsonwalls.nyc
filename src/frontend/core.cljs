@@ -4,12 +4,6 @@
             [om.dom :as dom]
             [clojure.browser.repl :as repl]))
 
-; (defonce repl (atom nil))
-
-; (if (nil? @repl)
-;   (reset! repl
-;     (repl/connect "http://localhost:9000/repl")))
-
 (enable-console-print!)
 (println "START")
 

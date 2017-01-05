@@ -1,0 +1,5 @@
+(slurp "names.json")
+(slurp "pages/names.json")
+(read-string (slurp "pages/names.json"))
+(type (read-string (slurp "pages/names.json")))
+exit

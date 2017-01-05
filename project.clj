@@ -1,4 +1,4 @@
-(defproject wordsonwalls "0.0.2"
+(defproject wordsonwalls "0.1.0"
   :main wordsonwall.core
   :license {:name "Eclipse Public License" :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]

@@ -3,3 +3,12 @@
 (read-string (slurp "pages/names.json"))
 (type (read-string (slurp "pages/names.json")))
 exit
+(mod 5 10)
+(mod 1 5)
+(mod 2 5)
+(mod 3 5)
+(mod 4 5)
+(mod 5 5)
+(mod 6 5)
+(mod 12 5)
+exit

@@ -37,39 +37,65 @@
   (swap! state update :visible-img
          (fn [x] 
            (println "visible image" x)
-           (mod (inc x) 5))))
+           (mod (inc x) 10))))
+
+(defn stop-and-clean-anim []
+  #?(:cljs
+      (do
+        (js/clearInterval @timer)
+        (reset! timer nil))))
+
+(defn select-fortune []
+  #?(:cljs
+      (do
+        (swap! state assoc :selected-fortue (rand-nth (:names @state))))))
 
 (defn trigger-anim []
   #?(:cljs 
      (do
        (if @timer
-         (do (js/clearInterval @timer)
-             (reset! timer nil))
+         (stop-and-clean-anim)
          (reset! timer
            (js/setInterval 
              (fn [] 
                (println "INCREMENTING VISIBLE")
-               (inc-visible-img))
-             200))))))
-
+               (inc-visible-img)
+               (println "inside interval" (:visible-img @state))
+               (when (>= (:visible-img @state) 9) 
+                 (stop-and-clean-anim)
+                 (select-fortune)))
+             100))))))
 
 (defn image-animation []
   [:div
-   {:on-click trigger-anim}
-   [:h1 "IMAGE ANUM"]
-   (when (:names @state)
+   (when (and (:names @state) (nil? (:selected-fortue @state)))
      (doall
        (for [x (range 10)]
          [:image {:src (make-url (nth (:names @state) x)) 
                   :style (when (not= x (:visible-img @state)) {:display "none"})
                   :key x}])))])
 
+(defn selected-fortune []
+  (when (:selected-fortue @state)
+    [:div
+      [:h1 "YOUR SELECTED FORTURE"]
+      [:p (:selected-fortue @state)]
+      [:image {:src (make-url (:selected-fortue @state))}] 
+      [:a {:href "/"} "share on twitter!"]
+      [:br]
+      [:a {:href "/"} "share on facebook!"]]))
+
 (defn render []
   [:div
-    [:div.w6.center.green
+    [:div.w-60.center.green.mt6.pb4
       {:on-click #(swap! state conj {:r (rand 100)})}
-      [:h1 "WORDS ON WALLS!"]
-      (image-animation)]])
+      [:h1 "wordsonwalls.nyc"]
+      [:a {:href "/about"} "about words on walls"]
+      [:h3 
+       {:on-click trigger-anim}
+       "click to roll your forture for the day.."]
+      (image-animation)
+      (selected-fortune)]])
 
 (tools/inject state #'render)
 

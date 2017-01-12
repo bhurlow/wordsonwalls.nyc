@@ -50,9 +50,17 @@
       (do
         (swap! state assoc :selected-fortue (rand-nth (:names @state))))))
 
+(defn play-card-sound []
+  #?(:cljs
+     (let [audio (.querySelector js/document "audio")]
+       (println audio)
+       (.play audio))))
+     ; (.play (.querySelector js/document "audio"))))
+
 (defn trigger-anim []
   #?(:cljs 
      (do
+       (play-card-sound)
        (if @timer
          (stop-and-clean-anim)
          (reset! timer
@@ -95,7 +103,8 @@
        {:on-click trigger-anim}
        "click to roll your forture for the day.."]
       (image-animation)
-      (selected-fortune)]])
+      (selected-fortune)
+      [:audio {:style {:display "hidden"} :src (str "/card_sound" (rand-nth [1 1]) ".mp3")}]]])
 
 (tools/inject state #'render)
 

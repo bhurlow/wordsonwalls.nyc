@@ -6,6 +6,20 @@
 
 #?(:cljs (enable-console-print!))
 
+(defn style->string [style-map]
+  (->> style-map
+      (map (fn [pair]
+             (str (name (first pair))
+                  ": "
+                  (second pair)
+                  ";")))
+      (interpose " ")
+      (reduce str)))
+
+(defn style [m]
+  #?(:clj (style->string m)
+     :cljs m))
+
 ;; TODO
 ;; mirror should escape this
 (defn initial-state [] 
@@ -88,7 +102,7 @@
      (doall
        (for [x (range 10)]
          [:image {:src (make-url (nth (:names @state) x)) 
-                  :style (when (not= x (:visible-img @state)) {:display "none"})
+                  :style (when (not= x (:visible-img @state)) (style {:display "none"}))
                   :key x}])))])
 
 (defn selected-fortune []

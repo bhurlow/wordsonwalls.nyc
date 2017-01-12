@@ -45,7 +45,7 @@
         (js/clearInterval @timer)
         (reset! timer nil))))
 
-(def FORTUNE_TIMEOUT 20000)
+(def FORTUNE_TIMEOUT 30000)
 
 (defn save-fortune-state [name]
   #?(:cljs
@@ -56,15 +56,14 @@
 (defn select-fortune []
   #?(:cljs
       (do
-        (swap! state assoc :selected-fortue (rand-nth (:names @state)))
-        (save-fortune-state (:selected-fortue @state)))))
+        (swap! state assoc :selected-fortune (rand-nth (:names @state)))
+        (save-fortune-state (:selected-fortune @state)))))
 
 (defn play-card-sound []
   #?(:cljs
      (let [audio (.querySelector js/document "audio")]
        (println audio)
        (.play audio))))
-     ; (.play (.querySelector js/document "audio"))))
 
 (defn trigger-anim []
   #?(:cljs 
@@ -85,7 +84,7 @@
 
 (defn image-animation []
   [:div
-   (when (and (:names @state) (nil? (:selected-fortue @state)))
+   (when (and (:names @state) (nil? (:selected-fortune @state)))
      (doall
        (for [x (range 10)]
          [:image {:src (make-url (nth (:names @state) x)) 
@@ -93,43 +92,55 @@
                   :key x}])))])
 
 (defn selected-fortune []
-  (when (:selected-fortue @state)
+  (when (:selected-fortune @state)
     [:div
-      [:h1 "YOUR SELECTED FORTURE"]
-      [:p (:selected-fortue @state)]
-      [:image {:src (make-url (:selected-fortue @state))}] 
+      [:image {:src (make-url (:selected-fortune @state))}] 
       [:a {:href "/"} "share on twitter!"]
       [:br]
       [:a {:href "/"} "share on facebook!"]]))
 
-
 (defn fortune-saved? []
   #?(:cljs
-      (let [forture (.getItem js/localStorage "fortune")
-            fortune-time (.getItem js/localStorage "fortune_time")
+      (let [fortune-time (.getItem js/localStorage "fortune_time")
             now (.now js/Date)
             expired? (> now fortune-time)]
-        (if expired?
-          (println "EXPIREDJ")))))
+        (not expired?))))
+
+(defn set-saved-forture []
+  #?(:cljs
+      (when (nil? (:selected-fortune @state))
+        (println "SET STATE FORITE")
+        (swap! state assoc :selected-fortune (.getItem js/localStorage "fortune")))))
+
+(defn display-fortune-expiration []
+  #?(:cljs
+      (let [fortune-time (.getItem js/localStorage "fortune_time")
+            now (.now js/Date)]
+        [:p.gray (str "Expires in " (- fortune-time now) " ms")])))
 
 (defn render []
   [:div
-    [:div.w-60.center.green.mt6.pb4
+    [:div.w-60.center.mt6.pb4
       {:on-click #(swap! state conj {:r (rand 100)})}
-      [:h1 "wordsonwalls.nyc"]
-      [:a {:href "/about"} "about words on walls"]
-      [:h3 
+      [:p "wordsonwalls.nyc"]
+      [:p
        {:on-click trigger-anim}
-       "click to roll your forture for the day.."]
-      (println (fortune-saved?))
-      (image-animation)
-      (selected-fortune)
+       "click to roll your forture for the day..."]
+      (if (fortune-saved?)
+        (do (println "FORTUEN ALREADY SAVED")
+            (set-saved-forture)
+            [:div
+              (display-fortune-expiration)
+              (selected-fortune)])
+        (do
+          (println "no saved fortune found")
+          [:div
+            (image-animation)
+            (selected-fortune)]))
+      [:a.mv4.fl {:href "/about"} "about wordsonwalls.nyc"]
       [:audio {:style {:display "hidden"} 
                :src (str "/card_sound" (rand-nth [1 1]) ".mp3")}]]])
 
 (tools/inject state #'render)
-
-
-
 
 

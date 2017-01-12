@@ -45,10 +45,19 @@
         (js/clearInterval @timer)
         (reset! timer nil))))
 
+(def FORTUNE_TIMEOUT 20000)
+
+(defn save-fortune-state [name]
+  #?(:cljs
+     (do
+       (.setItem js/localStorage "fortune" name)
+       (.setItem js/localStorage "fortune_time" (+ FORTUNE_TIMEOUT (.now js/Date))))))
+
 (defn select-fortune []
   #?(:cljs
       (do
-        (swap! state assoc :selected-fortue (rand-nth (:names @state))))))
+        (swap! state assoc :selected-fortue (rand-nth (:names @state)))
+        (save-fortune-state (:selected-fortue @state)))))
 
 (defn play-card-sound []
   #?(:cljs
@@ -93,6 +102,16 @@
       [:br]
       [:a {:href "/"} "share on facebook!"]]))
 
+
+(defn fortune-saved? []
+  #?(:cljs
+      (let [forture (.getItem js/localStorage "fortune")
+            fortune-time (.getItem js/localStorage "fortune_time")
+            now (.now js/Date)
+            expired? (> now fortune-time)]
+        (if expired?
+          (println "EXPIREDJ")))))
+
 (defn render []
   [:div
     [:div.w-60.center.green.mt6.pb4
@@ -102,9 +121,11 @@
       [:h3 
        {:on-click trigger-anim}
        "click to roll your forture for the day.."]
+      (println (fortune-saved?))
       (image-animation)
       (selected-fortune)
-      [:audio {:style {:display "hidden"} :src (str "/card_sound" (rand-nth [1 1]) ".mp3")}]]])
+      [:audio {:style {:display "hidden"} 
+               :src (str "/card_sound" (rand-nth [1 1]) ".mp3")}]]])
 
 (tools/inject state #'render)
 

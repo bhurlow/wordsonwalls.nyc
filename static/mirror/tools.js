@@ -1,4 +1,4 @@
-// Compiled by ClojureScript 1.9.293 {:static-fns true, :optimize-constants true}
+// Compiled by ClojureScript 1.9.293 {}
 goog.provide('mirror.tools');
 goog.require('cljs.core');
 goog.require('goog.net.jsloader');
@@ -11,13 +11,13 @@ goog.require('cljs.reader');
  *   state
  */
 mirror.tools.state_atom = (function mirror$tools$state_atom(data){
-return reagent.core.atom.cljs$core$IFn$_invoke$arity$1(data);
+return reagent.core.atom.call(null,data);
 });
 mirror.tools.on_reload = (function mirror$tools$on_reload(path){
-return cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["RELOADED > ",path], 0));
+return cljs.core.println.call(null,"RELOADED > ",path);
 });
 mirror.tools.reload_js_file = (function mirror$tools$reload_js_file(path){
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["attempting reload of",path], 0));
+cljs.core.println.call(null,"attempting reload of",path);
 
 goog.isProvided_ = (function (name){
 return false;
@@ -26,47 +26,47 @@ return false;
 var deferred = goog.net.jsloader.load(path);
 deferred.addCallback(((function (deferred){
 return (function (){
-return mirror.tools.on_reload(path);
+return mirror.tools.on_reload.call(null,path);
 });})(deferred))
 );
 
 return deferred.addErrback(((function (deferred){
 return (function (x){
-return cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["module load error",x], 0));
+return cljs.core.println.call(null,"module load error",x);
 });})(deferred))
 );
 });
 mirror.tools.handle_ss_cmd = (function mirror$tools$handle_ss_cmd(s){
-var data = cljs.reader.read_string(s);
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq([data], 0));
+var data = cljs.reader.read_string.call(null,s);
+cljs.core.println.call(null,data);
 
-var G__5596 = (((cljs.core.first(data) instanceof cljs.core.Keyword))?cljs.core.first(data).fqn:null);
-switch (G__5596) {
+var G__680 = (((cljs.core.first.call(null,data) instanceof cljs.core.Keyword))?cljs.core.first.call(null,data).fqn:null);
+switch (G__680) {
 case "reload":
-return cljs.core.doall.cljs$core$IFn$_invoke$arity$1(cljs.core.map.cljs$core$IFn$_invoke$arity$2(mirror.tools.reload_js_file,cljs.core.second(data)));
+return cljs.core.doall.call(null,cljs.core.map.call(null,mirror.tools.reload_js_file,cljs.core.second.call(null,data)));
 
 break;
 default:
-return cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["dont know the",cljs.core.first(data),"cmd"], 0));
+return cljs.core.println.call(null,"dont know the",cljs.core.first.call(null,data),"cmd");
 
 }
 });
 mirror.tools.ws_on_open = (function mirror$tools$ws_on_open(){
-return cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["WS OPEN"], 0));
+return cljs.core.println.call(null,"WS OPEN");
 });
 mirror.tools.ws_on_close = (function mirror$tools$ws_on_close(){
-return cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["WS CLOSE!"], 0));
+return cljs.core.println.call(null,"WS CLOSE!");
 });
 mirror.tools.ws_on_message = (function mirror$tools$ws_on_message(e){
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["WS MESSAGE"], 0));
+cljs.core.println.call(null,"WS MESSAGE");
 
-return mirror.tools.handle_ss_cmd(e.data);
+return mirror.tools.handle_ss_cmd.call(null,e.data);
 });
 mirror.tools.new_ws = (function mirror$tools$new_ws(){
 return (new WebSocket([cljs.core.str("ws://"),cljs.core.str(window.location.host),cljs.core.str("/_ws")].join('')));
 });
 mirror.tools.init_ws = (function mirror$tools$init_ws(){
-var ws = mirror.tools.new_ws();
+var ws = mirror.tools.new_ws.call(null);
 (ws["onopen"] = mirror.tools.ws_on_open);
 
 (ws["onclose"] = mirror.tools.ws_on_close);
@@ -74,29 +74,29 @@ var ws = mirror.tools.new_ws();
 return (ws["onmessage"] = mirror.tools.ws_on_message);
 });
 mirror.tools.setup_react = (function mirror$tools$setup_react(state,render_fn){
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["frontend init"], 0));
+cljs.core.println.call(null,"frontend init");
 
-var props = cljs.reader.read_string(__MIRROR_DATA__);
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["initial props",props], 0));
+var props = cljs.reader.read_string.call(null,__MIRROR_DATA__);
+cljs.core.println.call(null,"initial props",props);
 
-(cljs.core.reset_BANG_.cljs$core$IFn$_invoke$arity$2 ? cljs.core.reset_BANG_.cljs$core$IFn$_invoke$arity$2(state,props) : cljs.core.reset_BANG_.call(null,state,props));
+cljs.core.reset_BANG_.call(null,state,props);
 
-var G__5600 = new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [render_fn], null);
-var G__5601 = document.getElementById("__mount");
-return (reagent.core.render_component.cljs$core$IFn$_invoke$arity$2 ? reagent.core.render_component.cljs$core$IFn$_invoke$arity$2(G__5600,G__5601) : reagent.core.render_component.call(null,G__5600,G__5601));
+return reagent.core.render_component.call(null,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [render_fn], null),document.getElementById("__mount"));
 });
 if(typeof mirror.tools.initialized !== 'undefined'){
 } else {
-mirror.tools.initialized = (cljs.core.atom.cljs$core$IFn$_invoke$arity$1 ? cljs.core.atom.cljs$core$IFn$_invoke$arity$1(false) : cljs.core.atom.call(null,false));
+mirror.tools.initialized = cljs.core.atom.call(null,false);
 }
 mirror.tools.inject = (function mirror$tools$inject(state,render_fn){
-mirror.tools.setup_react(state,render_fn);
+mirror.tools.setup_react.call(null,state,render_fn);
 
-if(cljs.core.truth_((cljs.core.deref.cljs$core$IFn$_invoke$arity$1 ? cljs.core.deref.cljs$core$IFn$_invoke$arity$1(mirror.tools.initialized) : cljs.core.deref.call(null,mirror.tools.initialized)))){
+if(cljs.core.truth_(cljs.core.deref.call(null,mirror.tools.initialized))){
 return null;
 } else {
-mirror.tools.init_ws();
+mirror.tools.init_ws.call(null);
 
-return (cljs.core.reset_BANG_.cljs$core$IFn$_invoke$arity$2 ? cljs.core.reset_BANG_.cljs$core$IFn$_invoke$arity$2(mirror.tools.initialized,true) : cljs.core.reset_BANG_.call(null,mirror.tools.initialized,true));
+return cljs.core.reset_BANG_.call(null,mirror.tools.initialized,true);
 }
 });
+
+//# sourceMappingURL=tools.js.map

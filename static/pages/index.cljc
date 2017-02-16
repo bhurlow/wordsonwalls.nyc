@@ -1,7 +1,8 @@
 (ns pages.index
   (:require [clojure.string]
             [mirror.tools :as tools]
-   #?(:cljs [goog.net.XhrIo :as xhr]))
+   #?(:cljs [goog.net.XhrIo :as xhr])
+   #?(:cljs [goog.crypt.Md5 :as md5]))
  #?(:clj (:import [java.net.URLEncoder])))
 
 #?(:cljs (enable-console-print!))
@@ -67,12 +68,18 @@
        (.setItem js/localStorage "fortune" name)
        (.setItem js/localStorage "fortune_time" (+ FORTUNE_TIMEOUT (.now js/Date))))))
 
+(defn strip-fortune-name [n]
+  (.replace n ".jpg" ""))
+
+(defn cons-fortune-name [f]
+  (str f ".jpg"))
+
 (defn select-fortune []
   #?(:cljs
       (do
         (swap! state assoc :selected-fortune (rand-nth (:names @state)))
         (save-fortune-state (:selected-fortune @state))
-        (aset window.location "hash" (:selected-fortune @state)))))
+        (aset window.location "hash" (strip-fortune-name (:selected-fortune @state))))))
 
 (defn play-card-sound []
   #?(:cljs
@@ -107,14 +114,32 @@
                   :style (when (not= x (:visible-img @state)) (style {:display "none"}))
                   :key x}])))])
 
+(defn make-hash [in]
+  #?(:cljs
+      (let [m (new js/goog.crypt.Md5)
+            s (.digest m in)]
+        (.reset m)
+        (.join s ""))))
+
+; #?(:cljs (println (make-hash "HELLO")))
+
+(defn sharable-url []
+  #?(:cljs (.-href js/window.location))) 
+
+(defn twitter-link [url]
+  #?(:cljs (str "https://twitter.com/intent/tweet?text=" 
+             (js/encodeURIComponent url))))
+
+(defn fb-link [url]
+  #?(:cljs (str "http://www.facebook.com/sharer.php?u=" url)))
+             ; (js/encodeURIComponent url))))
+
 (defn selected-fortune []
   (when (:selected-fortune @state)
     [:div
       [:image {:src (make-url (:selected-fortune @state))}] 
-      [:a..link.white.dim.fl {:href "/"} "share on twitter!"]
-      [:br]
-      [:br]
-      [:a.link.white.dim.fl {:href "/"} "share on facebook!"]]))
+      [:a.link.black.dim.fl.bg-white.pa2.ttu.b.tracked.w-50-ns.w-100.mt1 {:href (twitter-link (sharable-url))} "share on twitter!"]
+      [:a.link.black.dim.fl.bg-white.pa2.ttu.b.tracked.w-50-ns.w-100.mt1 {:href (fb-link (sharable-url))} "share on facebook!"]]))
 
 (defn fortune-saved? []
   #?(:cljs
@@ -140,35 +165,37 @@
      (when (not (empty? (.-hash js/window.location)))
        (println "SETTING SELECETED!")
        (swap! state assoc :selected-fortune 
-              (.replace (.-hash js/window.location) "#" "")))))
+              (cons-fortune-name (.replace (.-hash js/window.location) "#" ""))))))
 
 (defn render-ball []
   #?(:cljs
-     (when (not (:selected-fortune @state))
-        [:div
-          [:img.pointer
+     (when (nil? (:selected-fortune @state))
+        [:div.w-100.fl
+          [:img.pointer.center
            {:on-click trigger-anim
             :src "/static/crystal_ball_transparent.png"}]
-          [:p.bg-black.pa2
-           "click the cyrstal boll to roll your forture for the day..."]])))
+          [:p.bg-white.black.tracked.pa2
+           "click the cyrstal ball to roll your forture for the day..."]])))
 
 (defn render-about []
-  [:p.fl.lh-copy.tl.measure "Everyone has something to say, whether politics, poetry or romantic pronouncements. Humerous aphorisms compete with surreal rants and New York city walls offer a constant comment canvas of free expression for it all. Ken Brown has been documenting the ephemeral nature of the city for over 30 years. He's discovered that these words hold much more than opinion and attitudes, they suggest a texture of the times. Moreover, they offer visions into the future. Words on Walls, a projected aided by Brian Hurlow and Marcus Flemming, seeks to fix these prescient phrases of New York street culture into something more than stone. Rub the digital crystal ball to receive your NYC Wors on Walls forture today! As they say, if you want to know what's going on, read the walls."])
+  [:div.mt2.black.f5.fl.tl.bg-white.pv2.lh-copy.tracked.ph2.f6.ph5-ns.w-100.overflow-hidden
+   [:p.measure
+     "Everyone has something to say, whether politics, poetry or romantic pronouncements. Humerous aphorisms compete with surreal rants and New York city walls offer a constant comment canvas of free expression for it all. Ken Brown has been documenting the ephemeral nature of the city for over 30 years. He's discovered that these words hold much more than opinion and attitudes, they suggest a texture of the times. Moreover, they offer visions into the future. Words on Walls, a projected aided by Brian Hurlow and Marcus Flemming, seeks to fix these prescient phrases of New York street culture into something more than stone. Rub the digital crystal ball to receive your NYC Wors on Walls forture today! As they say, if you want to know what's going on, read the walls."]])
+
+(defn render-bg []
+  [:div.fixed.z--1.w-100.h-100.top-0.cover
+   {:style {:background "url(/static/cosmos_crop.jpg)"
+            :z-index -1}}])
 
 (defn render []
-  [:div {:style {:background-color "darkblue"
-                 ; :background "url(/static/cosmos_crop.jpg)"
-                 :color "white"
-                 :background-size "cover"
+  [:div {:style {:color "white"
                  :width "100%"
-                 :height "100vh"
-                 :text-align "center"
-                 :overflow "hidden"}}
+                 :height "100%"
+                 :text-align "center"}}
+    (render-bg)
     [:div.w-60.center.mt6.pb4
       {:on-click #(swap! state conj {:r (rand 100)})}
-      [:h1.tracked-tight.ttu.fl [:a {:href "/"} "wordsonwalls.nyc"]]
-      (when (not (:clicked-ball @state))
-        (render-ball))
+      [:h1.tracked-mega.ttu.f3 [:a.link.white {:href "/"} "words on walls.nyc"]]
       (if (fortune-saved?)
         (do (println "FORTUEN ALREADY SAVED")
             (set-saved-forture)
@@ -179,6 +206,7 @@
         (do
           (println "no saved fortune found")
           [:div
+            (when (not (:clicked-ball @state)) (render-ball))
             (image-animation)
             (selected-fortune)
             (when (:selected-fortune @state)
@@ -191,5 +219,7 @@
 
 ;; on page load look for hash
 (detect-hash)
+
+; #?(:cljs (println (md5 "FOO")))
 
 

@@ -220,6 +220,5 @@
 ;; on page load look for hash
 (detect-hash)
 
-; #?(:cljs (println (md5 "FOO")))
 
 

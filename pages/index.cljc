@@ -71,7 +71,8 @@
   #?(:cljs
       (do
         (swap! state assoc :selected-fortune (rand-nth (:names @state)))
-        (save-fortune-state (:selected-fortune @state)))))
+        (save-fortune-state (:selected-fortune @state))
+        (aset window.location "hash" (:selected-fortune @state)))))
 
 (defn play-card-sound []
   #?(:cljs
@@ -82,6 +83,7 @@
 (defn trigger-anim []
   #?(:cljs 
      (do
+       (swap! state assoc :clicked-ball true)
        (play-card-sound)
        (if @timer
          (stop-and-clean-anim)
@@ -109,9 +111,10 @@
   (when (:selected-fortune @state)
     [:div
       [:image {:src (make-url (:selected-fortune @state))}] 
-      [:a {:href "/"} "share on twitter!"]
+      [:a..link.white.dim.fl {:href "/"} "share on twitter!"]
       [:br]
-      [:a {:href "/"} "share on facebook!"]]))
+      [:br]
+      [:a.link.white.dim.fl {:href "/"} "share on facebook!"]]))
 
 (defn fortune-saved? []
   #?(:cljs
@@ -132,29 +135,61 @@
             now (.now js/Date)]
         [:p.gray (str "Expires in " (- fortune-time now) " ms")])))
 
+(defn detect-hash []
+  #?(:cljs
+     (when (not (empty? (.-hash js/window.location)))
+       (println "SETTING SELECETED!")
+       (swap! state assoc :selected-fortune 
+              (.replace (.-hash js/window.location) "#" "")))))
+
+(defn render-ball []
+  #?(:cljs
+     (when (not (:selected-fortune @state))
+        [:div
+          [:img.pointer
+           {:on-click trigger-anim
+            :src "/static/crystal_ball_transparent.png"}]
+          [:p.bg-black.pa2
+           "click the cyrstal boll to roll your forture for the day..."]])))
+
+(defn render-about []
+  [:p.fl.lh-copy.tl.measure "Everyone has something to say, whether politics, poetry or romantic pronouncements. Humerous aphorisms compete with surreal rants and New York city walls offer a constant comment canvas of free expression for it all. Ken Brown has been documenting the ephemeral nature of the city for over 30 years. He's discovered that these words hold much more than opinion and attitudes, they suggest a texture of the times. Moreover, they offer visions into the future. Words on Walls, a projected aided by Brian Hurlow and Marcus Flemming, seeks to fix these prescient phrases of New York street culture into something more than stone. Rub the digital crystal ball to receive your NYC Wors on Walls forture today! As they say, if you want to know what's going on, read the walls."])
+
 (defn render []
-  [:div
+  [:div {:style {:background-color "darkblue"
+                 ; :background "url(/static/cosmos_crop.jpg)"
+                 :color "white"
+                 :background-size "cover"
+                 :width "100%"
+                 :height "100vh"
+                 :text-align "center"
+                 :overflow "hidden"}}
     [:div.w-60.center.mt6.pb4
       {:on-click #(swap! state conj {:r (rand 100)})}
-      [:p "wordsonwalls.nyc"]
-      [:p
-       {:on-click trigger-anim}
-       "click to roll your forture for the day..."]
+      [:h1.tracked-tight.ttu.fl [:a {:href "/"} "wordsonwalls.nyc"]]
+      (when (not (:clicked-ball @state))
+        (render-ball))
       (if (fortune-saved?)
         (do (println "FORTUEN ALREADY SAVED")
             (set-saved-forture)
             [:div
-              (display-fortune-expiration)
-              (selected-fortune)])
+              ; (display-fortune-expiration)
+              (selected-fortune)
+              [:div.mt4 (render-about)]])
         (do
           (println "no saved fortune found")
           [:div
             (image-animation)
-            (selected-fortune)]))
-      [:a.mv4.fl {:href "/about"} "about wordsonwalls.nyc"]
+            (selected-fortune)
+            (when (:selected-fortune @state)
+              [:div.mt4 (render-about)])]))
+      ; [:a.mv4.fl {:href "/about"} "about wordsonwalls.nyc"]
       [:audio {:style {:display "hidden"} 
                :src (str "/card_sound" (rand-nth [1 1]) ".mp3")}]]])
 
 (tools/inject state #'render)
+
+;; on page load look for hash
+(detect-hash)
 
 

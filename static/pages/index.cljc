@@ -175,10 +175,10 @@
            {:on-click trigger-anim
             :src "/static/crystal_ball_transparent.png"}]
           [:p.bg-white.black.tracked.pa2
-           "click the cyrstal ball to roll your forture for the day..."]])))
+           "click the crystal ball to roll your fortune for the day..."]])))
 
 (defn render-about []
-  [:div.mt2.black.f5.fl.tl.bg-white.pv2.lh-copy.tracked.ph2.f6.ph5-ns.w-100.overflow-hidden
+  [:div.mt2.black.f6.f5-ns.fl.tl.bg-white.pv2-ns.lh-copy.tracked.ph2.ph5-ns.w-100.overflow-hidden
    [:p.measure
      "Everyone has something to say, whether politics, poetry or romantic pronouncements. Humerous aphorisms compete with surreal rants and New York city walls offer a constant comment canvas of free expression for it all. Ken Brown has been documenting the ephemeral nature of the city for over 30 years. He's discovered that these words hold much more than opinion and attitudes, they suggest a texture of the times. Moreover, they offer visions into the future. Words on Walls, a projected aided by Brian Hurlow and Marcus Flemming, seeks to fix these prescient phrases of New York street culture into something more than stone. Rub the digital crystal ball to receive your NYC Wors on Walls forture today! As they say, if you want to know what's going on, read the walls."]])
 
@@ -193,7 +193,7 @@
                  :height "100%"
                  :text-align "center"}}
     (render-bg)
-    [:div.w-60.center.mt6.pb4
+    [:div.pa3.w-100.w-60-ns.center.mt2.mt3-ns.pb4
       {:on-click #(swap! state conj {:r (rand 100)})}
       [:h1.tracked-mega.ttu.f3 [:a.link.white {:href "/"} "words on walls.nyc"]]
       (if (fortune-saved?)

@@ -40,8 +40,8 @@ mirror.tools.handle_ss_cmd = (function mirror$tools$handle_ss_cmd(s){
 var data = cljs.reader.read_string.call(null,s);
 cljs.core.println.call(null,data);
 
-var G__680 = (((cljs.core.first.call(null,data) instanceof cljs.core.Keyword))?cljs.core.first.call(null,data).fqn:null);
-switch (G__680) {
+var G__973 = (((cljs.core.first.call(null,data) instanceof cljs.core.Keyword))?cljs.core.first.call(null,data).fqn:null);
+switch (G__973) {
 case "reload":
 return cljs.core.doall.call(null,cljs.core.map.call(null,mirror.tools.reload_js_file,cljs.core.second.call(null,data)));
 

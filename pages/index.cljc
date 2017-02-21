@@ -178,9 +178,9 @@
            "click the crystal ball to roll your fortune for the day..."]])))
 
 (defn render-about []
-  [:div.mt2.black.f6.f5-ns.fl.tl.bg-white.pv2-ns.lh-copy.tracked.ph2.ph5-ns.w-100.overflow-hidden
-   [:p.measure
-     "Everyone has something to say, whether politics, poetry or romantic pronouncements. Humerous aphorisms compete with surreal rants and New York city walls offer a constant comment canvas of free expression for it all. Ken Brown has been documenting the ephemeral nature of the city for over 30 years. He's discovered that these words hold much more than opinion and attitudes, they suggest a texture of the times. Moreover, they offer visions into the future. Words on Walls, a projected aided by Brian Hurlow and Marcus Flemming, seeks to fix these prescient phrases of New York street culture into something more than stone. Rub the digital crystal ball to receive your NYC Wors on Walls forture today! As they say, if you want to know what's going on, read the walls."]])
+  [:div.mt2.black.f6.fl.tl.bg-white.lh-copy.tracked.w-100.overflow-hidden.pa4
+   [:p.measure.pa0.ma0
+     "Everyone has something to say, whether politics, poetry, or romantic provocations. New York City walls offer a constant comment canvas of free expression for all. During his 30 years of documenting NYC street art ephemera, Ken Brown has discovered that these words on walls hold much more than opinions and attitudes, they suggest a texture of the times. Better yet: they offer visions into the future. Words on Walls NYC seeks to fix these prescient phrases of New York street culture into something more than stone. Rub the digital crystal ball to receive your Words on Walls fortune. As they say, if you want to know what's going on, read the walls."]])
 
 (defn render-bg []
   [:div.fixed.z--1.w-100.h-100.top-0.cover

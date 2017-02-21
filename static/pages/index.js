@@ -103,25 +103,25 @@ return (new cljs.core.Keyword(null,"selected-fortune","selected-fortune",-181850
 } else {
 return and__8673__auto__;
 }
-})())?cljs.core.doall.call(null,(function (){var iter__9040__auto__ = (function pages$index$image_animation_$_iter__3619(s__3620){
+})())?cljs.core.doall.call(null,(function (){var iter__9040__auto__ = (function pages$index$image_animation_$_iter__5084(s__5085){
 return (new cljs.core.LazySeq(null,(function (){
-var s__3620__$1 = s__3620;
+var s__5085__$1 = s__5085;
 while(true){
-var temp__4657__auto__ = cljs.core.seq.call(null,s__3620__$1);
+var temp__4657__auto__ = cljs.core.seq.call(null,s__5085__$1);
 if(temp__4657__auto__){
-var s__3620__$2 = temp__4657__auto__;
-if(cljs.core.chunked_seq_QMARK_.call(null,s__3620__$2)){
-var c__9038__auto__ = cljs.core.chunk_first.call(null,s__3620__$2);
+var s__5085__$2 = temp__4657__auto__;
+if(cljs.core.chunked_seq_QMARK_.call(null,s__5085__$2)){
+var c__9038__auto__ = cljs.core.chunk_first.call(null,s__5085__$2);
 var size__9039__auto__ = cljs.core.count.call(null,c__9038__auto__);
-var b__3622 = cljs.core.chunk_buffer.call(null,size__9039__auto__);
-if((function (){var i__3621 = (0);
+var b__5087 = cljs.core.chunk_buffer.call(null,size__9039__auto__);
+if((function (){var i__5086 = (0);
 while(true){
-if((i__3621 < size__9039__auto__)){
-var x = cljs.core._nth.call(null,c__9038__auto__,i__3621);
-cljs.core.chunk_append.call(null,b__3622,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"image","image",-58725096),new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"src","src",-1651076051),pages.index.make_url.call(null,cljs.core.nth.call(null,new cljs.core.Keyword(null,"names","names",-1943074658).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,pages.index.state)),x)),new cljs.core.Keyword(null,"style","style",-496642736),((cljs.core.not_EQ_.call(null,x,new cljs.core.Keyword(null,"visible-img","visible-img",697721342).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,pages.index.state))))?pages.index.style.call(null,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"display","display",242065432),"none"], null)):null),new cljs.core.Keyword(null,"key","key",-1516042587),x], null)], null));
+if((i__5086 < size__9039__auto__)){
+var x = cljs.core._nth.call(null,c__9038__auto__,i__5086);
+cljs.core.chunk_append.call(null,b__5087,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"image","image",-58725096),new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"src","src",-1651076051),pages.index.make_url.call(null,cljs.core.nth.call(null,new cljs.core.Keyword(null,"names","names",-1943074658).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,pages.index.state)),x)),new cljs.core.Keyword(null,"style","style",-496642736),((cljs.core.not_EQ_.call(null,x,new cljs.core.Keyword(null,"visible-img","visible-img",697721342).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,pages.index.state))))?pages.index.style.call(null,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"display","display",242065432),"none"], null)):null),new cljs.core.Keyword(null,"key","key",-1516042587),x], null)], null));
 
-var G__3623 = (i__3621 + (1));
-i__3621 = G__3623;
+var G__5088 = (i__5086 + (1));
+i__5086 = G__5088;
 continue;
 } else {
 return true;
@@ -129,13 +129,13 @@ return true;
 break;
 }
 })()){
-return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__3622),pages$index$image_animation_$_iter__3619.call(null,cljs.core.chunk_rest.call(null,s__3620__$2)));
+return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__5087),pages$index$image_animation_$_iter__5084.call(null,cljs.core.chunk_rest.call(null,s__5085__$2)));
 } else {
-return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__3622),null);
+return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__5087),null);
 }
 } else {
-var x = cljs.core.first.call(null,s__3620__$2);
-return cljs.core.cons.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"image","image",-58725096),new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"src","src",-1651076051),pages.index.make_url.call(null,cljs.core.nth.call(null,new cljs.core.Keyword(null,"names","names",-1943074658).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,pages.index.state)),x)),new cljs.core.Keyword(null,"style","style",-496642736),((cljs.core.not_EQ_.call(null,x,new cljs.core.Keyword(null,"visible-img","visible-img",697721342).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,pages.index.state))))?pages.index.style.call(null,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"display","display",242065432),"none"], null)):null),new cljs.core.Keyword(null,"key","key",-1516042587),x], null)], null),pages$index$image_animation_$_iter__3619.call(null,cljs.core.rest.call(null,s__3620__$2)));
+var x = cljs.core.first.call(null,s__5085__$2);
+return cljs.core.cons.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"image","image",-58725096),new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"src","src",-1651076051),pages.index.make_url.call(null,cljs.core.nth.call(null,new cljs.core.Keyword(null,"names","names",-1943074658).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,pages.index.state)),x)),new cljs.core.Keyword(null,"style","style",-496642736),((cljs.core.not_EQ_.call(null,x,new cljs.core.Keyword(null,"visible-img","visible-img",697721342).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,pages.index.state))))?pages.index.style.call(null,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"display","display",242065432),"none"], null)):null),new cljs.core.Keyword(null,"key","key",-1516042587),x], null)], null),pages$index$image_animation_$_iter__5084.call(null,cljs.core.rest.call(null,s__5085__$2)));
 }
 } else {
 return null;
@@ -207,7 +207,7 @@ return null;
 }
 });
 pages.index.render_about = (function pages$index$render_about(){
-return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div.mt2.black.f6.f5-ns.fl.tl.bg-white.pv2-ns.lh-copy.tracked.ph2.ph5-ns.w-100.overflow-hidden","div.mt2.black.f6.f5-ns.fl.tl.bg-white.pv2-ns.lh-copy.tracked.ph2.ph5-ns.w-100.overflow-hidden",212899130),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"p.measure","p.measure",-1732360073),"Everyone has something to say, whether politics, poetry or romantic pronouncements. Humerous aphorisms compete with surreal rants and New York city walls offer a constant comment canvas of free expression for it all. Ken Brown has been documenting the ephemeral nature of the city for over 30 years. He's discovered that these words hold much more than opinion and attitudes, they suggest a texture of the times. Moreover, they offer visions into the future. Words on Walls, a projected aided by Brian Hurlow and Marcus Flemming, seeks to fix these prescient phrases of New York street culture into something more than stone. Rub the digital crystal ball to receive your NYC Wors on Walls forture today! As they say, if you want to know what's going on, read the walls."], null)], null);
+return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div.mt2.black.f6.fl.tl.bg-white.lh-copy.tracked.w-100.overflow-hidden.pa4","div.mt2.black.f6.fl.tl.bg-white.lh-copy.tracked.w-100.overflow-hidden.pa4",-799126622),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"p.measure.pa0.ma0","p.measure.pa0.ma0",875905865),"Everyone has something to say, whether politics, poetry, or romantic provocations. New York City walls offer a constant comment canvas of free expression for all. During his 30 years of documenting NYC street art ephemera, Ken Brown has discovered that these words on walls hold much more than opinions and attitudes, they suggest a texture of the times. Better yet: they offer visions into the future. Words on Walls NYC seeks to fix these prescient phrases of New York street culture into something more than stone. Rub the digital crystal ball to receive your Words on Walls fortune. As they say, if you want to know what's going on, read the walls."], null)], null);
 });
 pages.index.render_bg = (function pages$index$render_bg(){
 return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div.fixed.z--1.w-100.h-100.top-0.cover","div.fixed.z--1.w-100.h-100.top-0.cover",441564047),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"style","style",-496642736),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"background","background",-863952629),"url(/static/cosmos_crop.jpg)",new cljs.core.Keyword(null,"z-index","z-index",1892827090),(-1)], null)], null)], null);

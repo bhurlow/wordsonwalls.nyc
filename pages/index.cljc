@@ -32,6 +32,7 @@
 
 (def state 
   (tools/state-atom {:visible-img 0
+                     :about-open? false
                      :names []}))
 
 (defn fetch-images [cb]
@@ -177,10 +178,24 @@
           [:p.bg-white.black.tracked.pa2
            "click the crystal ball to roll your fortune for the day..."]])))
 
+(defn go-back-home [e]
+  #?(:cljs
+      (aset js/window "location" "/")))
+
+(defn open-about [e]
+  #?(:cljs
+     (swap! state update :about-open? not)))
+
 (defn render-about []
-  [:div.mt2.black.f6.fl.tl.bg-white.lh-copy.tracked.w-100.overflow-hidden.pa4
-   [:p.measure.pa0.ma0
-     "Everyone has something to say, whether politics, poetry, or romantic provocations. New York City walls offer a constant comment canvas of free expression for all. During his 30 years of documenting NYC street art ephemera, Ken Brown has discovered that these words on walls hold much more than opinions and attitudes, they suggest a texture of the times. Better yet: they offer visions into the future. Words on Walls NYC seeks to fix these prescient phrases of New York street culture into something more than stone. Rub the digital crystal ball to receive your Words on Walls fortune. As they say, if you want to know what's going on, read the walls."]])
+   (if (:about-open? @state)
+    [:div.mt2.black.fl.tl.bg-white.lh-copy.tracked.w-100.overflow-hidden.pa4.relative
+       [:p.f6.measure.pa0.ma0 "Everyone has something to say, whether politics, poetry, or romantic provocations. New York City walls offer a constant comment canvas of free expression for all. During his 30 years of documenting NYC street art ephemera, Ken Brown has discovered that these words on walls hold much more than opinions and attitudes, they suggest a texture of the times. Better yet: they offer visions into the future. Words on Walls NYC seeks to fix these prescient phrases of New York street culture into something more than stone. Rub the digital crystal ball to receive your Words on Walls fortune. As they say, if you want to know what's going on, read the walls."]
+       [:img.pointer.w2.h2.right-0.bottom-0.absolute.pa2
+         {:on-click go-back-home
+          :src "/static/crystal_ball_transparent.png"}]]
+    [:a.link.black.dim.fl.bg-white.pa2.ttu.b.tracked.w-100.mt1.pointer
+     {:on-click open-about}
+     "LEARN MORE"]))
 
 (defn render-bg []
   [:div.fixed.z--1.w-100.h-100.top-0.cover
@@ -210,7 +225,8 @@
             (image-animation)
             (selected-fortune)
             (when (:selected-fortune @state)
-              [:div.mt4 (render-about)])]))
+              [:div 
+                [:div.mt4 (render-about)]])]))
       ; [:a.mv4.fl {:href "/about"} "about wordsonwalls.nyc"]
       [:audio {:style {:display "hidden"} 
                :src (str "/card_sound" (rand-nth [1 1]) ".mp3")}]]])

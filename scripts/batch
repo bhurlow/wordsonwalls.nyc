@@ -16,7 +16,7 @@ let resize = (name) => {
 
   return function(cb) {
     let filepath = path.join(targetdir, name)
-    let modname = name.replace(' ', '_')
+    let modname = name.replace(/\ /g, '_')
     let outpath = path.join(outdir, modname)
 
     console.log('starting', filepath)

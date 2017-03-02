@@ -1,0 +1,26 @@
+#! /usr/bin/env node
+
+var Jimp = require('jimp')
+var fs = require('fs')
+var path = require('path')
+
+let outdir = './raw/output'
+let files = fs.readdirSync('./raw/test')
+let images = files.filter(x => x.endsWith('jpg'))
+
+let resize = (name) => {
+
+  let filepath = path.join('./raw/test', name)
+  let outpath = path.join(outdir, name)
+
+  Jimp.read(filepath, function (err, img) {
+    if (err) throw err;
+    img.resize(900, 600) 
+      .write(outpath, (err, res) => {
+        console.log(filepath)
+      })
+  });
+
+}
+
+images.map(resize)

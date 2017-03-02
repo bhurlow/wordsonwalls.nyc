@@ -12,3 +12,15 @@ exit
 (mod 6 5)
 (mod 12 5)
 exit
+(file-seq "raw/processed")
+(file-seq (clojure.java.io/file "raw/processed"))
+(def files (file-seq (clojure.java.io/file "raw/processed")))
+(first files)
+(.isDir (first files))
+(.isDirectory (first files))
+(.isDirectory (second files))
+(second files)
+(.getName (second files)))
+(.getName (second files))
+(str (second files))
+exit

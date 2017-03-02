@@ -7,3 +7,5 @@ target/*
 jars/*
 raw
 static/out/*
+.lein-repl-history
+static/processed/*

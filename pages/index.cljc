@@ -24,11 +24,16 @@
 ;; TODO
 ;; mirror should escape this
 (defn initial-state [] 
-  #?(:clj (do {:names (read-string 
-                        (-> (slurp "pages/names.json")
-                            (clojure.string/escape 
-                              {\' "%27"
-                               \? "%3F"})))})))
+  #?(:clj 
+     (do 
+       {:names 
+          (->> (file-seq (clojure.java.io/file "static/processed"))
+               (filter #(.isFile %))
+               (map str)
+               (map #(clojure.string/escape % {\' "%27" \? "%3F"}))
+               (shuffle)
+               (take 10)
+               (vec))})))
 
 (def state 
   (tools/state-atom {:visible-img 0
@@ -45,7 +50,7 @@
           (cb parsed))))))
 
 (defn make-url [name]
-  (str "http://wordsonwalls.nyc.s3.amazonaws.com/processed/" name))
+  (str name))
 
 (defonce timer (atom nil))
 
@@ -109,8 +114,10 @@
 (defn image-animation []
   [:div
    (when (and (:names @state) (nil? (:selected-fortune @state)))
+     (println "IMAGE ANIM")
+     (println (:names @state))
      (doall
-       (for [x (range 10)]
+       (for [x (range 5)]
          [:image {:src (make-url (nth (:names @state) x)) 
                   :style (when (not= x (:visible-img @state)) (style {:display "none"}))
                   :key x}])))])
@@ -203,6 +210,7 @@
             :z-index -1}}])
 
 (defn render []
+  ; (println @state)
   [:div {:style {:color "white"
                  :width "100%"
                  :height "100%"
@@ -229,7 +237,7 @@
                 [:div.mt4 (render-about)]])]))
       ; [:a.mv4.fl {:href "/about"} "about wordsonwalls.nyc"]
       [:audio {:style {:display "hidden"} 
-               :src (str "/card_sound" (rand-nth [1 1]) ".mp3")}]]])
+               :src (str "/static/card_sound" (rand-nth [1 1]) ".mp3")}]]])
 
 (tools/inject state #'render)
 

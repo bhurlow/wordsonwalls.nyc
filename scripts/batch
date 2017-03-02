@@ -3,24 +3,36 @@
 var Jimp = require('jimp')
 var fs = require('fs')
 var path = require('path')
+var gm = require('gm')
+var parallelLimit = require('run-parallel-limit')
 
-let outdir = './raw/output'
-let files = fs.readdirSync('./raw/test')
+let targetdir = './raw/raw'
+let outdir = './raw/processed'
+
+let files = fs.readdirSync(targetdir)
 let images = files.filter(x => x.endsWith('jpg'))
 
 let resize = (name) => {
 
-  let filepath = path.join('./raw/test', name)
-  let outpath = path.join(outdir, name)
+  return function(cb) {
+    let filepath = path.join(targetdir, name)
+    let modname = name.replace(' ', '_')
+    let outpath = path.join(outdir, modname)
 
-  Jimp.read(filepath, function (err, img) {
-    if (err) throw err;
-    img.resize(900, 600) 
-      .write(outpath, (err, res) => {
-        console.log(filepath)
-      })
-  });
+    console.log('starting', filepath)
+
+    gm(filepath)
+      .resize(900, 600)
+      .noProfile()
+      .write(outpath, function (err) {
+        if (err) throw err
+        cb(null, outpath)
+      });
+  }
 
 }
 
-images.map(resize)
+let tasks = images.map(resize)
+parallelLimit(tasks, 10, console.log)
+
+

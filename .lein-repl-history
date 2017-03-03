@@ -24,3 +24,5 @@ exit
 (.getName (second files))
 (str (second files))
 exit
+(int 16.123)
+exit

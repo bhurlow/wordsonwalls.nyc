@@ -18,8 +18,8 @@
       (reduce str)))
 
 (defn style [m]
-  #?(:clj (style->string m)
-     :cljs m))
+  #?(:clj {:style (style->string m)}
+     :cljs {:style m}))
 
 ;; TODO
 ;; mirror should escape this
@@ -29,10 +29,10 @@
        {:names 
           (->> (file-seq (clojure.java.io/file "static/processed"))
                (filter #(.isFile %))
-               (map str)
+               (map #(.getName %))
                (map #(clojure.string/escape % {\' "%27" \? "%3F"}))
                (shuffle)
-               (take 10)
+               (take 100)
                (vec))})))
 
 (def state 
@@ -50,14 +50,14 @@
           (cb parsed))))))
 
 (defn make-url [name]
-  (str name))
+  (str "static/processed/" name))
 
 (defonce timer (atom nil))
 
 (defn inc-visible-img []
   (swap! state update :visible-img
          (fn [x] 
-           (println "visible image" x)
+           (println "visible image >" x)
            (mod (inc x) 10))))
 
 (defn stop-and-clean-anim []
@@ -118,9 +118,10 @@
      (println (:names @state))
      (doall
        (for [x (range 5)]
-         [:image {:src (make-url (nth (:names @state) x)) 
-                  :style (when (not= x (:visible-img @state)) (style {:display "none"}))
-                  :key x}])))])
+         [:image 
+          (conj (style (when (not= x (:visible-img @state)) {:display "none"}))
+                {:src (make-url (nth (:names @state) x)) 
+                 :key x})])))])
 
 (defn make-hash [in]
   #?(:cljs
@@ -142,13 +143,6 @@
   #?(:cljs (str "http://www.facebook.com/sharer.php?u=" url)))
              ; (js/encodeURIComponent url))))
 
-(defn selected-fortune []
-  (when (:selected-fortune @state)
-    [:div
-      [:image {:src (make-url (:selected-fortune @state))}] 
-      [:a.link.black.dim.fl.bg-white.pa2.ttu.b.tracked.w-50-ns.w-100.mt1 {:href (twitter-link (sharable-url))} "share on twitter!"]
-      [:a.link.black.dim.fl.bg-white.pa2.ttu.b.tracked.w-50-ns.w-100.mt1 {:href (fb-link (sharable-url))} "share on facebook!"]]))
-
 (defn fortune-saved? []
   #?(:cljs
       (let [fortune-time (.getItem js/localStorage "fortune_time")
@@ -156,17 +150,29 @@
             expired? (> now fortune-time)]
         (not expired?))))
 
+(defn get-fortune-expiration []
+  #?(:cljs
+      (let [fortune-time (.getItem js/localStorage "fortune_time")
+            now (.now js/Date)
+            expired? (> now fortune-time)]
+        (when-not expired?
+          (int (/ (- fortune-time now) 1000))))))
+
+(defn selected-fortune []
+  (when (:selected-fortune @state)
+    [:div
+      [:image {:src (make-url (:selected-fortune @state))}] 
+      [:a.link.black.dim.fl.bg-white.pa2.ttu.b.tracked.w-50-ns.w-100.mv1 {:href (twitter-link (sharable-url))} "share on twitter!"]
+      [:a.link.black.dim.fl.bg-white.pa2.ttu.b.tracked.w-50-ns.w-100.mv1 {:href (fb-link (sharable-url))} "share on facebook!"]
+      (when (get-fortune-expiration)
+        [:p.black.fl.w-100.bg-white.tracked.pa2.mv1 "roll another fortune in: " (get-fortune-expiration) " seconds"])]))
+
 (defn set-saved-forture []
   #?(:cljs
       (when (nil? (:selected-fortune @state))
         (println "SET STATE FORITE")
         (swap! state assoc :selected-fortune (.getItem js/localStorage "fortune")))))
 
-(defn display-fortune-expiration []
-  #?(:cljs
-      (let [fortune-time (.getItem js/localStorage "fortune_time")
-            now (.now js/Date)]
-        [:p.gray (str "Expires in " (- fortune-time now) " ms")])))
 
 (defn detect-hash []
   #?(:cljs
@@ -199,23 +205,24 @@
        [:p.f6.measure.pa0.ma0 "Everyone has something to say, whether politics, poetry, or romantic provocations. New York City walls offer a constant comment canvas of free expression for all. During his 30 years of documenting NYC street art ephemera, Ken Brown has discovered that these words on walls hold much more than opinions and attitudes, they suggest a texture of the times. Better yet: they offer visions into the future. Words on Walls NYC seeks to fix these prescient phrases of New York street culture into something more than stone. Rub the digital crystal ball to receive your Words on Walls fortune. As they say, if you want to know what's going on, read the walls."]
        [:img.pointer.w2.h2.right-0.bottom-0.absolute.pa2
          {:on-click go-back-home
-          :src "/static/crystal_ball_transparent.png"}]]
-    [:a.link.black.dim.fl.bg-white.pa2.ttu.b.tracked.w-100.mt1.pointer
+          :src "/static/crystal_ball_transparent.png"}]
+       [:p.f6.measure.pa0.mt4 "made by Ken Brown, Marcus Flemming and Brian Hurlow"]]
+    [:a.link.black.dim.fl.bg-white.pa2.ttu.b.tracked.w-100.mv1.pointer
      {:on-click open-about}
      "LEARN MORE"]))
 
 (defn render-bg []
   [:div.fixed.z--1.w-100.h-100.top-0.cover
-   {:style {:background "url(/static/cosmos_crop.jpg)"
-            :z-index -1}}])
+   (style {:background "url(/static/cosmos_crop.jpg)"
+           :z-index -1})])
 
 (defn render []
-  ; (println @state)
-  [:div {:style {:color "white"
-                 :width "100%"
-                 :height "100%"
-                 :text-align "center"}}
+  [:div.pv4.pb6 (style {:color "white"
+                        :width "100%"
+                        :height "100%"
+                        :text-align "center"})
     (render-bg)
+    (println "RENDER" (render-bg))
     [:div.pa3.w-100.w-60-ns.center.mt2.mt3-ns.pb4
       {:on-click #(swap! state conj {:r (rand 100)})}
       [:h1.tracked-mega.ttu.f3 [:a.link.white {:href "/"} "words on walls.nyc"]]
@@ -236,8 +243,8 @@
               [:div 
                 [:div.mt4 (render-about)]])]))
       ; [:a.mv4.fl {:href "/about"} "about wordsonwalls.nyc"]
-      [:audio {:style {:display "hidden"} 
-               :src (str "/static/card_sound" (rand-nth [1 1]) ".mp3")}]]])
+      [:audio (conj (style {:display "hidden"}) 
+                    {:src (str "/static/card_sound" (rand-nth [1 1]) ".mp3")})]]])
 
 (tools/inject state #'render)
 

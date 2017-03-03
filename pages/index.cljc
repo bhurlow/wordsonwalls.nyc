@@ -44,7 +44,6 @@
   #?(:cljs 
      (xhr/send "/imgs"
       (fn [event] 
-        (println event)
         (let [res (-> event .-target .getResponseText)
               parsed (.parse window.JSON res)]
           (cb parsed))))))
@@ -57,7 +56,6 @@
 (defn inc-visible-img []
   (swap! state update :visible-img
          (fn [x] 
-           (println "visible image >" x)
            (mod (inc x) 10))))
 
 (defn stop-and-clean-anim []
@@ -90,7 +88,6 @@
 (defn play-card-sound []
   #?(:cljs
      (let [audio (.querySelector js/document "audio")]
-       (println audio)
        (.play audio))))
 
 (defn trigger-anim []
@@ -103,9 +100,7 @@
          (reset! timer
            (js/setInterval 
              (fn [] 
-               (println "INCREMENTING VISIBLE")
                (inc-visible-img)
-               (println "inside interval" (:visible-img @state))
                (when (>= (:visible-img @state) 9) 
                  (stop-and-clean-anim)
                  (select-fortune)))
@@ -114,8 +109,6 @@
 (defn image-animation []
   [:div
    (when (and (:names @state) (nil? (:selected-fortune @state)))
-     (println "IMAGE ANIM")
-     (println (:names @state))
      (doall
        (for [x (range 5)]
          [:image 
@@ -129,8 +122,6 @@
             s (.digest m in)]
         (.reset m)
         (.join s ""))))
-
-; #?(:cljs (println (make-hash "HELLO")))
 
 (defn sharable-url []
   #?(:cljs (.-href js/window.location))) 
@@ -170,14 +161,12 @@
 (defn set-saved-forture []
   #?(:cljs
       (when (nil? (:selected-fortune @state))
-        (println "SET STATE FORITE")
         (swap! state assoc :selected-fortune (.getItem js/localStorage "fortune")))))
 
 
 (defn detect-hash []
   #?(:cljs
      (when (not (empty? (.-hash js/window.location)))
-       (println "SETTING SELECETED!")
        (swap! state assoc :selected-fortune 
               (cons-fortune-name (.replace (.-hash js/window.location) "#" ""))))))
 
@@ -222,19 +211,16 @@
                         :height "100%"
                         :text-align "center"})
     (render-bg)
-    (println "RENDER" (render-bg))
     [:div.pa3.w-100.w-60-ns.center.mt2.mt3-ns.pb4
       {:on-click #(swap! state conj {:r (rand 100)})}
       [:h1.tracked-mega.ttu.f3 [:a.link.white {:href "/"} "words on walls.nyc"]]
       (if (fortune-saved?)
-        (do (println "FORTUEN ALREADY SAVED")
-            (set-saved-forture)
+        (do (set-saved-forture)
             [:div
               ; (display-fortune-expiration)
               (selected-fortune)
               [:div.mt4 (render-about)]])
         (do
-          (println "no saved fortune found")
           [:div
             (when (not (:clicked-ball @state)) (render-ball))
             (image-animation)

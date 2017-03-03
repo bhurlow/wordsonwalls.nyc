@@ -1,0 +1,2 @@
+#! /bin/bash
+ java -cp jars/mirror.jar:$PWD mirror.cli :build

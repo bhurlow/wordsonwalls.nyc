@@ -5,11 +5,12 @@ VHOST=demo.wordsonwalls.nyc
   # --restart always \
 
 docker run \
-  -it \
+  -d \
+  --restart always \
   -p 3700:3000 \
   -e VIRTUAL_HOST=$VHOST \
   -v /root/wordsonwalls:/wordsonwalls \
-  openjdk:8-jre /bin/bash
+  openjdk:8-jre /bin/bash -c "cd /wordsonwalls && java -cp jars/mirror.jar:\$PWD mirror.cli :build"
 
 
 # docker run \

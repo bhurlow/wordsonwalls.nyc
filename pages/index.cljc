@@ -204,12 +204,18 @@
 
 (defn render-about []
    (if (:about-open? @state)
-    [:div.mt2.black.fl.tl.bg-white.lh-copy.tracked.w-100.overflow-hidden.pa4.relative.mb4
+    [:div.mt1.black.fl.tl.bg-white.lh-copy.tracked.w-100.overflow-hidden.pa4.relative.mb4
        [:p.f6.measure.pa0.ma0 "Everyone has something to say, whether politics, poetry, or romantic provocations. New York City walls offer a constant comment canvas of free expression for all. During his 30 years of documenting NYC street art ephemera, Ken Brown has discovered that these words on walls hold much more than opinions and attitudes, they suggest a texture of the times. Better yet: they offer visions into the future. Words on Walls NYC seeks to fix these prescient phrases of New York street culture into something more than stone. Rub the digital crystal ball to receive your Words on Walls fortune. As they say, if you want to know what's going on, read the walls."]
        [:img.pointer.w2.h2.right-0.bottom-0.absolute.pa2
          {:on-click go-back-home
           :src "/static/crystal_ball_transparent.png"}]
-       [:p.f6.measure.pa0.mt4 "made by Ken Brown, Marcus Fleming and Brian Hurlow"]]
+       [:p.f6.measure.pa0.mt4 
+          [:span "made by"] 
+          [:br]
+          [:br]
+          [:a.link.blue {:href "http://www.kenbrownpixpop.com/" :target "_blank"} "Ken Brown"] 
+          [:span ", Marcus Fleming and "] 
+          [:a.link.blue {:href "http://brianhurlow.com" :target "_blank"} "Brian Hurlow"]]]
     [:a.link.black.dim.fl.bg-white.pa2.ttu.b.tracked.w-100.mv1.pointer
      {:on-click open-about}
      "LEARN MORE"]))

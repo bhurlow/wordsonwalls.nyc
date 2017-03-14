@@ -38,7 +38,16 @@
 (def state 
   (tools/state-atom {:visible-img 0
                      :about-open? false
+                     :clock 0
                      :names []}))
+
+;; will force ui to update by second for countdown
+#?(:cljs
+   (do
+     (js/setInterval 
+       (fn [x]
+         (swap! state update :clock inc))
+       1000)))
 
 (defn fetch-images [cb]
   #?(:cljs 
@@ -56,7 +65,7 @@
 (defn inc-visible-img []
   (swap! state update :visible-img
          (fn [x] 
-           (mod (inc x) 10))))
+           (mod (inc x) 12))))
 
 (defn stop-and-clean-anim []
   #?(:cljs
@@ -64,7 +73,8 @@
         (js/clearInterval @timer)
         (reset! timer nil))))
 
-(def FORTUNE_TIMEOUT 30000)
+;; 30000 = 30s
+(def FORTUNE_TIMEOUT 60000)
 
 (defn save-fortune-state [name]
   #?(:cljs
@@ -88,7 +98,9 @@
 (defn play-card-sound []
   #?(:cljs
      (let [audio (.querySelector js/document "audio")]
-       (.play audio))))
+       (js/setTimeout
+         (fn [] (.play audio))
+         200))))
 
 (defn trigger-anim []
   #?(:cljs 
@@ -101,16 +113,16 @@
            (js/setInterval 
              (fn [] 
                (inc-visible-img)
-               (when (>= (:visible-img @state) 9) 
+               (when (>= (:visible-img @state) 11) 
                  (stop-and-clean-anim)
                  (select-fortune)))
-             100))))))
+             120))))))
 
 (defn image-animation []
   [:div
    (when (and (:names @state) (nil? (:selected-fortune @state)))
      (doall
-       (for [x (range 5)]
+       (for [x (range 12)]
          [:image 
           (conj (style (when (not= x (:visible-img @state)) {:display "none"}))
                 {:src (make-url (nth (:names @state) x)) 
@@ -182,7 +194,9 @@
 
 (defn go-back-home [e]
   #?(:cljs
-      (aset js/window "location" "/")))
+     (do
+      (.clear js/window.localStorage)
+      (aset js/window "location" "/"))))
 
 (defn open-about [e]
   #?(:cljs
@@ -190,12 +204,12 @@
 
 (defn render-about []
    (if (:about-open? @state)
-    [:div.mt2.black.fl.tl.bg-white.lh-copy.tracked.w-100.overflow-hidden.pa4.relative
+    [:div.mt2.black.fl.tl.bg-white.lh-copy.tracked.w-100.overflow-hidden.pa4.relative.mb4
        [:p.f6.measure.pa0.ma0 "Everyone has something to say, whether politics, poetry, or romantic provocations. New York City walls offer a constant comment canvas of free expression for all. During his 30 years of documenting NYC street art ephemera, Ken Brown has discovered that these words on walls hold much more than opinions and attitudes, they suggest a texture of the times. Better yet: they offer visions into the future. Words on Walls NYC seeks to fix these prescient phrases of New York street culture into something more than stone. Rub the digital crystal ball to receive your Words on Walls fortune. As they say, if you want to know what's going on, read the walls."]
        [:img.pointer.w2.h2.right-0.bottom-0.absolute.pa2
          {:on-click go-back-home
           :src "/static/crystal_ball_transparent.png"}]
-       [:p.f6.measure.pa0.mt4 "made by Ken Brown, Marcus Flemming and Brian Hurlow"]]
+       [:p.f6.measure.pa0.mt4 "made by Ken Brown, Marcus Fleming and Brian Hurlow"]]
     [:a.link.black.dim.fl.bg-white.pa2.ttu.b.tracked.w-100.mv1.pointer
      {:on-click open-about}
      "LEARN MORE"]))
@@ -211,9 +225,9 @@
                         :height "100%"
                         :text-align "center"})
     (render-bg)
-    [:div.pa3.w-100.w-60-ns.center.mt2.mt3-ns.pb4
+    [:div.pa3.w-100.w-60-ns.center.mt2.mt3-ns.pb4.mb4.overflow-hidden
       {:on-click #(swap! state conj {:r (rand 100)})}
-      [:h1.tracked-mega.ttu.f3 [:a.link.white {:href "/"} "words on walls.nyc"]]
+      [:h1.tracked-mega.ttu.f3 [:a.link.white.outline-0 {:href "/"} "words on walls.nyc"]]
       (if (fortune-saved?)
         (do (set-saved-forture)
             [:div

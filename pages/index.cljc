@@ -214,8 +214,10 @@
           [:br]
           [:br]
           [:a.link.blue {:href "http://www.kenbrownpixpop.com/" :target "_blank"} "Ken Brown"] 
-          [:span ", Marcus Fleming and "] 
-          [:a.link.blue {:href "http://brianhurlow.com" :target "_blank"} "Brian Hurlow"]]]
+          [:a.link.blue {:href "http://www.poetechs.com/" :target "_blank"} "Marcus Fleming"] 
+          [:span "and"]
+          [:a.link.blue {:href "http://brianhurlow.com" :target "_blank"} "Brian Hurlow"]
+          [:p "(c) Ken Brown 2017"]]]
     [:a.link.black.dim.fl.bg-white.pa2.ttu.b.tracked.w-100.mv1.pointer
      {:on-click open-about
       :on-touch-start open-about}

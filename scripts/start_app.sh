@@ -1,11 +1,12 @@
 #! /bin/bash
 
-VHOST=demo.wordsonwalls.nyc
+VHOST=wordsonwalls.nyc,www.wordsonwalls.nyc
 
   # --restart always \
 
 docker run \
   -d \
+  --name wordsonwalls \
   --restart always \
   -p 3700:3000 \
   -e VIRTUAL_HOST=$VHOST \
